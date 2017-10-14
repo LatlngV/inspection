@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+
+    <template id="dotop_patrol_track">
+        &lt;!DOCTYPE html&gt;
+        <html>
+            <head>
+                <meta charset="utf-8"/>
+                <meta name="viewport" content="initial-scale=1.0, user-scalable=no"/>
+                <title>谷歌地图</title>
+                <link rel="stylesheet" type="text/css" href="/inspection/static/src/css/loading_google_map.css"/>
+                <link rel="stylesheet" type="text/css" href="/inspection/static/src/css/bootstrap-datetimepicker.min.css"/>
+                <link rel="stylesheet" type="text/css" href="/inspection/static/src/css/google_map.css"/>
+                <link rel="stylesheet" type="text/css" href="/inspection/static/src/css/bootstrap.min.css"/>
+                <link rel="stylesheet" type="text/css" href="/inspection/static/src/css/BootSideMenu.css"/>
+                <!--<link rel="stylesheet" type="text/css" href="/inspection/static/src/js/skin/WdatePicker.css"/>-->
+                <link rel="stylesheet" type="text/css" href="/inspection/static/src/css/default.css"/>
+            </head>
+            <body>
+                <script>
+                    var staffId =<t t-raw="staff_id"/>;
+                </script>
+                <div style="margin-left: 15px;" id="divContainer">
+                    <span style="color: red; vertical-align: middle;">● 超速</span>
+                    <span style="color: yellow; margin-left: 5px; vertical-align: middle;">● 超限</span>
+                    <span style="color: green; margin-left: 5px; vertical-align: middle;">● 正常</span>
+                    <span style="color: #ccc; margin-left: 5px; vertical-align: middle;">● 静止</span>
+                    时间从:
+                    <input style="display: inline-block; width: 200px;" type="text" id="date_start"
+                           onclick="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm:ss'})"/>
+                    到:
+                    <input style="display: inline-block; width: 200px;" type="text" id="date_end"
+                           onclick="WdatePicker({dateFmt:'yyyy-MM-dd HH:mm:ss'})"/>
+                    <a href="###" class="btn btn-primary" style="padding: 1px; width: 40px; vertical-align: middle;"
+                       onclick="selectRoute()">显示
+                    </a>
+                    <a href="###" id="start_play" style="padding: 1px; width: 40px; vertical-align: middle;"
+                       class="btn btn-primary" onclick="startPlay()">回放
+                    </a>
+                    <label>回放速度:</label>
+                    快
+                    <input id="range" style="vertical-align: middle;" type="range" value="500" min="100" max="1000"
+                           step="100"/>
+                    慢
+                    <a href="###" class="btn btn-primary" style="padding: 1px; width: 40px; vertical-align: middle;"
+                       onclick="stopPlay()">暂停
+                    </a>
+                </div>
+                <div id="odoo-google-map"> </div>
+                <div id="test2" class="container sidebar_1 sidebar_1-right"
+                     style="width: 300px; right: 0px; padding: 1px;">
+                    <div class="toggler">
+                        <span class="glyphicon glyphicon-chevron-right" style="display: block;"> </span>
+                        <span class="glyphicon glyphicon-chevron-left" style="display: none;"> </span>
+                    </div>
+                    <div class="panel-group" id="accordion" style="width: 300px; margin-right: 0;">
+                        <div class="panel panel-default">
+                            <div class="panel-heading">
+                                <h4 class="panel-title">
+                                    <a data-toggle="collapse" data-parent="#accordion" href="#collapseOne">工具栏</a>
+                                </h4>
+                            </div>
+                            <div id="collapseOne" class="panel-collapse collapse">
+                                <div class="panel-body">
+                                    <div id="range" class="btn btn-info btn-sm">
+                                        <span>测距</span>
+                                    </div>
+                                    <div id="sRes" class="range-distance-btn hide">0.00Km</div>
+                                </div>
+                                <div class="panel-body">
+                                    <div id="mj" class="btn btn-info btn-sm">测面积</div>
+                                    <div id="mianji" class="range-mj-btn hide">0.00km²</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="panel panel-default">
+                            <div class="panel-heading">
+                                <h4 class="panel-title">
+                                    <a data-toggle="collapse" data-parent="#accordion" href="#collapseThree">巡检人员</a>
+                                </h4>
+                            </div>
+                            <div id="collapseThree" class="panel-collapse collapse in">
+                                <div class="panel-body" style="padding: 5px;">
+                                    <div id="tree" style="height: 580px; overflow: auto;"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <script src="http://ditu.google.cn/maps/api/js?key=AIzaSyBfUr4jDPyIJu2j70qRI9oJnMdxOhxWPZw&amp;language=cn&amp;libraries=drawing,geometry&amp;v=3.25"></script>
+                <script type="text/javascript" src="/inspection/static/src/js/jquery-1.7.2.min.js"></script>
+                <script type="text/javascript" src="/inspection/static/src/js/bootstrap.js"></script>
+                <script type="text/javascript" src="/inspection/static/src/js/bootstrap-datetimepicker.min.js"></script>
+                <script type="text/javascript" src="/inspection/static/src/js/my97datepicker/WdatePicker.js"></script>
+                <script type="text/javascript" src="/inspection/static/src/js/bootstrap-treeview.min.js"></script>
+                <script type="text/javascript" src="/inspection/static/src/js/BootSideMenu.js"></script>
+                <script type="text/javascript" src="/inspection/static/src/js/patrol_track.js"></script>
+                <!--<script type="text/javascript" src="/inspection/static/src/js/staff_report.js"></script>-->
+            </body>
+        </html>
+    </template>
+
+</odoo>

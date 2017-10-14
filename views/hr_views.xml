@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<dotop>
+    <data>
+
+        <!-- 员工 form 视图 -->
+        <record id="hr_employee_form" model="ir.ui.view">
+            <field name="name">hr_employee.form</field>
+            <field name="model">hr.employee</field>
+            <field name="inherit_id" ref="hr.view_employee_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='category_ids']" position="after">
+                    <group>
+                        <field name="select_job" widget="radio"/>
+                    </group>
+                </xpath>
+                <xpath expr="//field[@name='address_id']" position="before">
+                    <field name="job_number"/>
+                </xpath>
+                <xpath expr="//field[@name='work_phone']" position="after">
+                    <field name="wei_chat"/>
+                </xpath>
+                <xpath expr="//field[@name='calendar_id']" position="after">
+                    <field name="device_number"/>
+                    <field name="create_date"/>
+                </xpath>
+            </field>
+        </record>
+
+        <!-- 部门 tree 视图 -->
+        <record id="hr_department_tree" model="ir.ui.view">
+            <field name="name">hr_department.tree</field>
+            <field name="model">hr.department</field>
+            <field name="arch" type="xml">
+                <tree>
+                    <field name="name"/>
+                    <field name="parent_id"/>
+                    <field name="manager_id"/>
+                    <field name="patrol_department"/>
+                </tree>
+            </field>
+        </record>
+        <!-- 部门 form 视图 -->
+        <record id="hr_department_form" model="ir.ui.view">
+            <field name="name">hr_department.form</field>
+            <field name="model">hr.department</field>
+            <field name="inherit_id" ref="hr.view_department_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='parent_id']" position="after">
+                    <field name="patrol_department"/>
+                </xpath>
+            </field>
+        </record>
+
+        <!-- 角色 form 视图 -->
+        <record id="hr_job_form" model="ir.ui.view">
+            <field name="name">hr.job.form</field>
+            <field name="model">hr.job</field>
+            <field name="arch" type="xml">
+                <form>
+                    <sheet>
+                        <div class="oe_button_box" name="button_box"/>
+                        <div class="oe_title">
+                            <label for="name" class="oe_edit_only"/>
+                            <h1>
+                                <field name="name" placeholder="例如: 巡检人员" default_focus="1"/>
+                            </h1>
+                        </div>
+                        <div>
+                            <label for="description"/>
+                            <field name="description"/>
+                        </div>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+        <!-- 角色 tree 视图 -->
+        <record id="hr_job_tree" model="ir.ui.view">
+            <field name="name">hr.job.tree</field>
+            <field name="model">hr.job</field>
+            <field name="arch" type="xml">
+                <tree>
+                    <field name="name"/>
+                </tree>
+            </field>
+        </record>
+        <!-- 角色 search 视图 -->
+        <record id="hr_job_search" model="ir.ui.view">
+            <field name="name">hr.job.search</field>
+            <field name="model">hr.job</field>
+            <field name="arch" type="xml">
+                <search>
+                    <field name="name"/>
+                </search>
+            </field>
+        </record>
+
+        <record id="hr_employee_action" model="ir.actions.act_window">
+            <field name="name">员工管理</field>
+            <field name="res_model">hr.employee</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+            <field name="domain">[("select_job","=","patrol_employee")]</field>
+            <field name="view_ids" eval="[(5,0,0),
+                                          (0,0,{'view_mode':'tree','view_id':ref('hr.view_employee_tree')}),
+                                          (0,0,{'view_mode':'form','view_id':ref('hr_employee_form')})]"/>
+        </record>
+        <record id="hr_department_action" model="ir.actions.act_window">
+            <field name="name">部门管理</field>
+            <field name="res_model">hr.department</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+            <field name="domain">[("patrol_department","=",True)]</field>
+            <field name="view_ids" eval="[(5,0,0),
+                                          (0,0,{'view_mode':'tree','view_id':ref('hr_department_tree')}),
+                                          (0,0,{'view_mode':'form','view_id':ref('hr.view_department_form')})]"/>
+        </record>
+        <record id="hr_job_action" model="ir.actions.act_window">
+            <field name="name">角色管理</field>
+            <field name="res_model">hr.job</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+            <field name="search_view_id" ref="hr_job_search"/>
+            <field name="view_ids" eval="[(5,0,0),
+                                          (0,0,{'view_mode':'tree','view_id':ref('hr_job_tree')}),
+                                          (0,0,{'view_mode':'form','view_id':ref('hr_job_form')})]"/>
+            <field name="help" type="html">
+                <p class="oe_view_nocontent_create">
+                    创建你的第一个角色。
+                </p>
+            </field>
+        </record>
+
+    </data>
+</dotop>

@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <data>
+
+        <record id="repair_map_form" model="ir.ui.view">
+            <field name="name">repair_map.form</field>
+            <field name="model">inspection.repair_map</field>
+            <field name="arch" type="xml">
+                <form>
+                    <div style="margin:0 auto; width: 800px; height: 600px; margin-bottom: 50px;">
+                        <iframe src="/loading/google_map?flag=repair_map" width="100%" height="100%"></iframe>
+                    </div>
+                    <footer>
+                        <button special="cancel" string="确定"/>
+                    </footer>
+                </form>
+            </field>
+        </record>
+
+    </data>
+</odoo>

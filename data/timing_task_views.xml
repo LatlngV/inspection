@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <data>
+
+        <!--<record id="access_token_cron" model="ir.cron">-->
+            <!--<field name="name">定时获取 Access Token</field>-->
+            <!--<field name="active" eval="True"/>-->
+            <!--<field name="user_id" ref="base.user_root"/>-->
+            <!--<field name="interval_number">110</field>-->
+            <!--<field name="interval_type">minutes</field>-->
+            <!--<field name="numbercall">-1</field>-->
+            <!--<field name="doall" eval="False"/>-->
+            <!--<field name="model">inspection.system_user</field>-->
+            <!--<field name="function">action_access_token</field>-->
+            <!--<field name="args" eval="'()'"/>-->
+        <!--</record>-->
+
+        <record id="staff_position_cron" model="ir.cron">
+            <field name="name">获取巡线员最新位置</field>
+            <field name="active" eval="True"/>
+            <field name="user_id" ref="base.user_root"/>
+            <field name="interval_number">1</field>
+            <field name="interval_type">minutes</field>
+            <field name="numbercall">-1</field>
+            <field name="doall" eval="False"/>
+            <field name="model" eval="'inspection.system_user'"/>
+            <field name="function">get_monitor</field>
+            <field name="args" eval="'()'"/>
+        </record>
+
+        <record id="staff_history_position_cron" model="ir.cron">
+            <field name="name">获取巡线员历史位置</field>
+            <field name="active" eval="True"/>
+            <field name="user_id" ref="base.user_root"/>
+            <field name="interval_number">10</field>
+            <field name="interval_type">minutes</field>
+            <field name="numbercall">-1</field>
+            <field name="doall" eval="False"/>
+            <field name="model" eval="'inspection.system_user'"/>
+            <field name="function">get_history</field>
+            <field name="args" eval="'()'"/>
+        </record>
+
+        <record id="synchronize_data_cron" model="ir.cron">
+            <field name="name">同步巡线员线路数据</field>
+            <field name="active" eval="True"/>
+            <field name="user_id" ref="base.user_root"/>
+            <field name="interval_number">10</field>
+            <field name="interval_type">minutes</field>
+            <field name="numbercall">-1</field>
+            <field name="doall" eval="False"/>
+            <field name="model" eval="'inspection.system_user'"/>
+            <field name="function">_synchronize_data</field>
+            <field name="args" eval="'()'"/>
+        </record>
+
+        <record id="staff_task_cron" model="ir.cron">
+            <field name="name">生成员工任务</field>
+            <field name="active" eval="True"/>
+            <field name="user_id" ref="base.user_root"/>
+            <field name="interval_number">12</field>
+            <field name="interval_type">hours</field>
+            <field name="numbercall">-1</field>
+            <field name="doall" eval="False"/>
+            <field name="model" eval="'inspection.system_user'"/>
+            <field name="function">_staff_task</field>
+            <field name="args" eval="'()'"/>
+        </record>
+
+        <record id="staff_task_detail_cron" model="ir.cron">
+            <field name="name">员工任务详情</field>
+            <field name="active" eval="True"/>
+            <field name="user_id" ref="base.user_root"/>
+            <field name="interval_number">12</field>
+            <field name="interval_type">hours</field>
+            <field name="numbercall">-1</field>
+            <field name="doall" eval="False"/>
+            <field name="model" eval="'inspection.system_user'"/>
+            <field name="function">_staff_task_detail</field>
+            <field name="args" eval="'()'"/>
+        </record>
+
+    </data>
+</odoo>

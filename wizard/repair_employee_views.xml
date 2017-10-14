@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <data>
+
+        <record id="repair_employee_form" model="ir.ui.view">
+            <field name="name">repair_employee.form</field>
+            <field name="model">inspection.repair_employee</field>
+            <field name="arch" type="xml">
+                <form>
+                    <group>
+                        <field name="danger_manager_id" invisible="1"/>
+                        <field name="repair_employee"/>
+                    </group>
+                    <footer>
+                        <button name="action_confirm" type="object" string="确定" class="oe_highlight"/>
+                        <button special="cancel" string="取消"/>
+                    </footer>
+                </form>
+            </field>
+        </record>
+
+    </data>
+</odoo>

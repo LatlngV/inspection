@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <data>
+
+        <record id="module_category_inspection" model="ir.module.category">
+            <field name="name">巡检系统</field>
+            <field name="description">帮助你更好的区分管理员和员工权限</field>
+        </record>
+
+        <record id="group_inspection_user" model="res.groups">
+            <field name="name">员工</field>
+            <field name="implied_ids" eval="[(4, ref('base.group_user'))]"/>
+            <field name="category_id" ref="module_category_inspection"/>
+        </record>
+        <record id="group_inspection_manager" model="res.groups">
+            <field name="name">管理员</field>
+            <field name="implied_ids" eval="[(4, ref('group_inspection_user'))]"/>
+            <field name="category_id" ref="module_category_inspection"/>
+        </record>
+        <record id="group_inspection_sudo" model="res.groups">
+            <field name="name">超级管理员</field>
+            <field name="implied_ids" eval="[(4, ref('group_inspection_manager'))]"/>
+            <field name="category_id" ref="module_category_inspection"/>
+            <field name="users" eval="[(4, ref('base.user_root'))]"/>
+        </record>
+
+        <record id="group_super_user" model="res.groups">
+            <field name="name">巡线-超级管理员</field>
+            <field name="category_id" ref="base.module_category_hidden"/>
+        </record>
+
+        <record id="group_staff_user" model="res.groups">
+            <field name="name">巡线-巡线员</field>
+            <field name="category_id" ref="base.module_category_hidden"/>
+        </record>
+
+        <record id="group_repair_user" model="res.groups">
+            <field name="name">巡线-维修人员</field>
+            <field name="category_id" ref="base.module_category_hidden"/>
+        </record>
+
+    </data>
+</odoo>

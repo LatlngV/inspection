@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <data>
+
+        <record id="system_user_tree" model="ir.ui.view">
+            <field name="name">system_user.tree</field>
+            <field name="model">inspection.system_user</field>
+            <field name="arch" type="xml">
+                <tree>
+                    <field name="username"/>
+                    <field name="password"/>
+                    <field name="access_token"/>
+                    <field name="is_bind" invisible="1"/>
+                    <field name="begin_time" invisible="1"/>
+                    <field name="data_position" invisible="1"/>
+                </tree>
+            </field>
+        </record>
+        <record id="system_user_form" model="ir.ui.view">
+            <field name="name">system_user.form</field>
+            <field name="model">inspection.system_user</field>
+            <field name="arch" type="xml">
+                <form>
+                    <header>
+                        <button name="action_access_token" string="获取 Access Token" type="object"/>
+                        <button name="action_update_gps" string="获取GPS设备" type="object"/>
+                    </header>
+                    <sheet>
+                        <group>
+                            <field name="username"/>
+                            <field name="password"/>
+                            <field name="access_token"/>
+                            <field name="is_bind" invisible="1"/>
+                            <field name="begin_time" invisible="1"/>
+                            <field name="data_position" invisible="1"/>
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <record id="system_user_action" model="ir.actions.act_window">
+            <field name="name">汽车在线账号</field>
+            <field name="res_model">inspection.system_user</field>
+            <field name="view_type">form</field>
+            <field name="view_id" ref="system_user_tree"/>
+            <field name="view_mode">tree,form</field>
+        </record>
+
+    </data>
+
+</odoo>

@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <data>
+
+        <record id="gps_manager_tree" model="ir.ui.view">
+            <field name="name">gps_manager.tree</field>
+            <field name="model">inspection.gps_manager</field>
+            <field name="arch" type="xml">
+                <tree>
+                    <field name="name"/>
+                    <field name="staff"/>
+                    <field name="number"/>
+                    <field name="imei"/>
+                    <field name="phone"/>
+                    <field name="latitude"/>
+                    <field name="longitude"/>
+                    <field name="speed" invisible="1"/>
+                    <field name="gps_time" invisible="1"/>
+                    <field name="power" invisible="1"/>
+                    <field name="device_info" invisible="1"/>
+                    <field name="device_info_new" invisible="1"/>
+                </tree>
+            </field>
+        </record>
+        <record id="gps_manager_form" model="ir.ui.view">
+            <field name="name">gps_manager.form</field>
+            <field name="model">inspection.gps_manager</field>
+            <field name="arch" type="xml">
+                <form>
+                    <sheet>
+                        <group>
+                            <field name="name"/>
+                            <field name="staff" options="{'no_open':True}" required="1"/>
+                            <field name="number"/>
+                            <field name="imei"/>
+                            <field name="phone"/>
+                            <field name="latitude" invisible="1"/>
+                            <field name="longitude" invisible="1"/>
+                            <field name="speed" invisible="1"/>
+                            <field name="gps_time" invisible="1"/>
+                            <field name="power" invisible="1"/>
+                            <field name="device_info" invisible="1"/>
+                            <field name="device_info_new" invisible="1"/>
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <record id="gps_manager_action" model="ir.actions.act_window">
+            <field name="name">GPS 管理</field>
+            <field name="res_model">inspection.gps_manager</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+        </record>
+
+    </data>
+</odoo>

@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+
+    <template id="repair_map">
+        &lt;!DOCTYPE html&gt;
+        <html>
+            <head>
+                <meta charset="utf-8"/>
+                <meta name="viewport" content="initial-scale=1.0, user-scalable=no"/>
+                <title>谷歌地图</title>
+                <link rel="stylesheet" type="text/css" href="/inspection/static/src/css/loading_google_map.css"/>
+                <link rel="stylesheet" type="text/css" href="/inspection/static/src/css/google_map.css"/>
+                <link rel="stylesheet" type="text/css" href="/inspection/static/src/css/bootstrap.min.css"/>
+            </head>
+            <body>
+                <div id="repair_map"> </div>
+                <script src="http://ditu.google.cn/maps/api/js?key=AIzaSyBfUr4jDPyIJu2j70qRI9oJnMdxOhxWPZw&amp;language=cn&amp;libraries=drawing,geometry&amp;v=3.26"></script>
+                <script type="text/javascript" src="/inspection/static/src/js/jquery-1.7.2.min.js"></script>
+                <script type="text/javascript" src="/inspection/static/src/js/repair_map.js"></script>
+            </body>
+        </html>
+    </template>
+
+</odoo>

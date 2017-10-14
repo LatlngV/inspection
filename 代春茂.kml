@@ -1,0 +1,708 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<kml xmlns="http://www.opengis.net/kml/2.2" xmlns:gx="http://www.google.com/kml/ext/2.2" xmlns:kml="http://www.opengis.net/kml/2.2" xmlns:atom="http://www.w3.org/2005/Atom">
+<Document>
+	<name>代春茂</name>
+	<StyleMap id="119">
+		<Pair>
+			<key>normal</key>
+			<styleUrl>#127</styleUrl>
+		</Pair>
+		<Pair>
+			<key>highlight</key>
+			<styleUrl>#17</styleUrl>
+		</Pair>
+	</StyleMap>
+	<Style id="125">
+		<IconStyle>
+			<Icon>
+				<href>http://www.oruxmaps.com/iconos/wpts_pin1.png</href>
+			</Icon>
+			<hotSpot x="0.5" y="0" xunits="fraction" yunits="fraction"/>
+		</IconStyle>
+		<BalloonStyle>
+			<text><![CDATA[<p align="left"><font size="+1"><b>$[name]</b></font></p> <p align="left">$[description]</p>]]></text>
+		</BalloonStyle>
+	</Style>
+	<Style id="164">
+		<IconStyle>
+			<Icon>
+				<href>http://www.oruxmaps.com/iconos/wpts_pin1.png</href>
+			</Icon>
+			<hotSpot x="0.5" y="0" xunits="fraction" yunits="fraction"/>
+		</IconStyle>
+		<BalloonStyle>
+			<text><![CDATA[<p align="left"><font size="+1"><b>$[name]</b></font></p> <p align="left">$[description]</p>]]></text>
+		</BalloonStyle>
+	</Style>
+	<Style id="114">
+		<IconStyle>
+			<Icon>
+				<href>http://www.oruxmaps.com/iconos/wpts_pin1.png</href>
+			</Icon>
+			<hotSpot x="0.5" y="0" xunits="fraction" yunits="fraction"/>
+		</IconStyle>
+		<BalloonStyle>
+			<text><![CDATA[<p align="left"><font size="+1"><b>$[name]</b></font></p> <p align="left">$[description]</p>]]></text>
+		</BalloonStyle>
+	</Style>
+	<Style id="18">
+		<IconStyle>
+			<Icon>
+				<href>http://www.oruxmaps.com/iconos/wpts_pin1.png</href>
+			</Icon>
+			<hotSpot x="0.5" y="0" xunits="fraction" yunits="fraction"/>
+		</IconStyle>
+		<BalloonStyle>
+			<text><![CDATA[<p align="left"><font size="+1"><b>$[name]</b></font></p> <p align="left">$[description]</p>]]></text>
+		</BalloonStyle>
+	</Style>
+	<StyleMap id="117">
+		<Pair>
+			<key>normal</key>
+			<styleUrl>#13</styleUrl>
+		</Pair>
+		<Pair>
+			<key>highlight</key>
+			<styleUrl>#111</styleUrl>
+		</Pair>
+	</StyleMap>
+	<Style id="126">
+		<IconStyle>
+			<Icon>
+				<href>http://www.oruxmaps.com/iconos/wpts_pin1.png</href>
+			</Icon>
+			<hotSpot x="0.5" y="0" xunits="fraction" yunits="fraction"/>
+		</IconStyle>
+		<BalloonStyle>
+			<text><![CDATA[<p align="left"><font size="+1"><b>$[name]</b></font></p> <p align="left">$[description]</p>]]></text>
+		</BalloonStyle>
+	</Style>
+	<Style id="128">
+		<IconStyle>
+			<Icon>
+				<href>http://www.oruxmaps.com/iconos/wpts_pin1.png</href>
+			</Icon>
+			<hotSpot x="0.5" y="0" xunits="fraction" yunits="fraction"/>
+		</IconStyle>
+		<BalloonStyle>
+			<text><![CDATA[<p align="left"><font size="+1"><b>$[name]</b></font></p> <p align="left">$[description]</p>]]></text>
+		</BalloonStyle>
+	</Style>
+	<Style id="121">
+		<IconStyle>
+			<Icon>
+				<href>http://www.oruxmaps.com/iconos/wpts_pin1.png</href>
+			</Icon>
+			<hotSpot x="0.5" y="0" xunits="fraction" yunits="fraction"/>
+		</IconStyle>
+		<BalloonStyle>
+			<text><![CDATA[<p align="left"><font size="+1"><b>$[name]</b></font></p> <p align="left">$[description]</p>]]></text>
+		</BalloonStyle>
+	</Style>
+	<Style id="s_ylw-pushpin">
+		<IconStyle>
+			<scale>1.1</scale>
+			<Icon>
+				<href>http://maps.google.com/mapfiles/kml/pushpin/ylw-pushpin.png</href>
+			</Icon>
+			<hotSpot x="20" y="2" xunits="pixels" yunits="pixels"/>
+		</IconStyle>
+	</Style>
+	<Style id="sn_ylw-pushpin61152">
+		<IconStyle>
+			<scale>1.1</scale>
+			<Icon>
+				<href>http://maps.google.com/mapfiles/kml/pushpin/ylw-pushpin.png</href>
+			</Icon>
+			<hotSpot x="20" y="2" xunits="pixels" yunits="pixels"/>
+		</IconStyle>
+		<LineStyle>
+			<color>ffff0000</color>
+			<width>8</width>
+		</LineStyle>
+	</Style>
+	<Style id="16">
+		<IconStyle>
+			<Icon>
+				<href>http://www.oruxmaps.com/iconos/wpts_pin1.png</href>
+			</Icon>
+			<hotSpot x="0.5" y="0" xunits="fraction" yunits="fraction"/>
+		</IconStyle>
+		<BalloonStyle>
+			<text><![CDATA[<p align="left"><font size="+1"><b>$[name]</b></font></p> <p align="left">$[description]</p>]]></text>
+		</BalloonStyle>
+	</Style>
+	<StyleMap id="m_ylw-pushpin">
+		<Pair>
+			<key>normal</key>
+			<styleUrl>#s_ylw-pushpin</styleUrl>
+		</Pair>
+		<Pair>
+			<key>highlight</key>
+			<styleUrl>#s_ylw-pushpin_hl</styleUrl>
+		</Pair>
+	</StyleMap>
+	<Style id="12">
+		<IconStyle>
+			<Icon>
+				<href>http://www.oruxmaps.com/iconos/wpts_pin1.png</href>
+			</Icon>
+			<hotSpot x="0.5" y="0" xunits="fraction" yunits="fraction"/>
+		</IconStyle>
+		<BalloonStyle>
+			<text><![CDATA[<p align="left"><font size="+1"><b>$[name]</b></font></p> <p align="left">$[description]</p>]]></text>
+		</BalloonStyle>
+	</Style>
+	<Style id="13">
+		<IconStyle>
+			<Icon>
+				<href>http://www.oruxmaps.com/iconos/wpts_pin1.png</href>
+			</Icon>
+			<hotSpot x="0.5" y="0" xunits="fraction" yunits="fraction"/>
+		</IconStyle>
+		<BalloonStyle>
+			<text><![CDATA[<p align="left"><font size="+1"><b>$[name]</b></font></p> <p align="left">$[description]</p>]]></text>
+		</BalloonStyle>
+	</Style>
+	<StyleMap id="162">
+		<Pair>
+			<key>normal</key>
+			<styleUrl>#164</styleUrl>
+		</Pair>
+		<Pair>
+			<key>highlight</key>
+			<styleUrl>#175</styleUrl>
+		</Pair>
+	</StyleMap>
+	<Style id="166">
+		<IconStyle>
+			<Icon>
+				<href>http://www.oruxmaps.com/iconos/wpts_pin1.png</href>
+			</Icon>
+			<hotSpot x="0.5" y="0" xunits="fraction" yunits="fraction"/>
+		</IconStyle>
+		<BalloonStyle>
+			<text><![CDATA[<p align="left"><font size="+1"><b>$[name]</b></font></p> <p align="left">$[description]</p>]]></text>
+		</BalloonStyle>
+	</Style>
+	<StyleMap id="115">
+		<Pair>
+			<key>normal</key>
+			<styleUrl>#18</styleUrl>
+		</Pair>
+		<Pair>
+			<key>highlight</key>
+			<styleUrl>#123</styleUrl>
+		</Pair>
+	</StyleMap>
+	<Style id="sh_ylw-pushpin21152">
+		<IconStyle>
+			<scale>1.3</scale>
+			<Icon>
+				<href>http://maps.google.com/mapfiles/kml/pushpin/ylw-pushpin.png</href>
+			</Icon>
+			<hotSpot x="20" y="2" xunits="pixels" yunits="pixels"/>
+		</IconStyle>
+		<LineStyle>
+			<color>ffff0000</color>
+			<width>8</width>
+		</LineStyle>
+	</Style>
+	<Style id="175">
+		<IconStyle>
+			<Icon>
+				<href>http://www.oruxmaps.com/iconos/wpts_pin1.png</href>
+			</Icon>
+			<hotSpot x="0.5" y="0" xunits="fraction" yunits="fraction"/>
+		</IconStyle>
+		<BalloonStyle>
+			<text><![CDATA[<p align="left"><font size="+1"><b>$[name]</b></font></p> <p align="left">$[description]</p>]]></text>
+		</BalloonStyle>
+	</Style>
+	<StyleMap id="118">
+		<Pair>
+			<key>normal</key>
+			<styleUrl>#126</styleUrl>
+		</Pair>
+		<Pair>
+			<key>highlight</key>
+			<styleUrl>#121</styleUrl>
+		</Pair>
+	</StyleMap>
+	<Style id="137">
+		<IconStyle>
+			<Icon>
+				<href>http://www.oruxmaps.com/iconos/wpts_pin1.png</href>
+			</Icon>
+			<hotSpot x="0.5" y="0" xunits="fraction" yunits="fraction"/>
+		</IconStyle>
+		<BalloonStyle>
+			<text><![CDATA[<p align="left"><font size="+1"><b>$[name]</b></font></p> <p align="left">$[description]</p>]]></text>
+		</BalloonStyle>
+	</Style>
+	<Style id="s_ylw-pushpin_hl">
+		<IconStyle>
+			<scale>1.3</scale>
+			<Icon>
+				<href>http://maps.google.com/mapfiles/kml/pushpin/ylw-pushpin.png</href>
+			</Icon>
+			<hotSpot x="20" y="2" xunits="pixels" yunits="pixels"/>
+		</IconStyle>
+	</Style>
+	<Style id="130">
+		<IconStyle>
+			<Icon>
+				<href>http://www.oruxmaps.com/iconos/wpts_pin1.png</href>
+			</Icon>
+			<hotSpot x="0.5" y="0" xunits="fraction" yunits="fraction"/>
+		</IconStyle>
+		<BalloonStyle>
+			<text><![CDATA[<p align="left"><font size="+1"><b>$[name]</b></font></p> <p align="left">$[description]</p>]]></text>
+		</BalloonStyle>
+	</Style>
+	<StyleMap id="msn_ylw-pushpin611173">
+		<Pair>
+			<key>normal</key>
+			<styleUrl>#sn_ylw-pushpin61152</styleUrl>
+		</Pair>
+		<Pair>
+			<key>highlight</key>
+			<styleUrl>#sh_ylw-pushpin21152</styleUrl>
+		</Pair>
+	</StyleMap>
+	<Style id="122">
+		<IconStyle>
+			<Icon>
+				<href>http://www.oruxmaps.com/iconos/wpts_pin1.png</href>
+			</Icon>
+			<hotSpot x="0.5" y="0" xunits="fraction" yunits="fraction"/>
+		</IconStyle>
+		<BalloonStyle>
+			<text><![CDATA[<p align="left"><font size="+1"><b>$[name]</b></font></p> <p align="left">$[description]</p>]]></text>
+		</BalloonStyle>
+	</Style>
+	<Style id="17">
+		<IconStyle>
+			<Icon>
+				<href>http://www.oruxmaps.com/iconos/wpts_pin1.png</href>
+			</Icon>
+			<hotSpot x="0.5" y="0" xunits="fraction" yunits="fraction"/>
+		</IconStyle>
+		<BalloonStyle>
+			<text><![CDATA[<p align="left"><font size="+1"><b>$[name]</b></font></p> <p align="left">$[description]</p>]]></text>
+		</BalloonStyle>
+	</Style>
+	<StyleMap id="116">
+		<Pair>
+			<key>normal</key>
+			<styleUrl>#112</styleUrl>
+		</Pair>
+		<Pair>
+			<key>highlight</key>
+			<styleUrl>#16</styleUrl>
+		</Pair>
+	</StyleMap>
+	<Style id="127">
+		<IconStyle>
+			<Icon>
+				<href>http://www.oruxmaps.com/iconos/wpts_pin1.png</href>
+			</Icon>
+			<hotSpot x="0.5" y="0" xunits="fraction" yunits="fraction"/>
+		</IconStyle>
+		<BalloonStyle>
+			<text><![CDATA[<p align="left"><font size="+1"><b>$[name]</b></font></p> <p align="left">$[description]</p>]]></text>
+		</BalloonStyle>
+	</Style>
+	<StyleMap id="19">
+		<Pair>
+			<key>normal</key>
+			<styleUrl>#130</styleUrl>
+		</Pair>
+		<Pair>
+			<key>highlight</key>
+			<styleUrl>#122</styleUrl>
+		</Pair>
+	</StyleMap>
+	<StyleMap id="110">
+		<Pair>
+			<key>normal</key>
+			<styleUrl>#12</styleUrl>
+		</Pair>
+		<Pair>
+			<key>highlight</key>
+			<styleUrl>#114</styleUrl>
+		</Pair>
+	</StyleMap>
+	<Style id="113">
+		<IconStyle>
+			<Icon>
+				<href>http://www.oruxmaps.com/iconos/wpts_pin1.png</href>
+			</Icon>
+			<hotSpot x="0.5" y="0" xunits="fraction" yunits="fraction"/>
+		</IconStyle>
+		<BalloonStyle>
+			<text><![CDATA[<p align="left"><font size="+1"><b>$[name]</b></font></p> <p align="left">$[description]</p>]]></text>
+		</BalloonStyle>
+	</Style>
+	<StyleMap id="120">
+		<Pair>
+			<key>normal</key>
+			<styleUrl>#128</styleUrl>
+		</Pair>
+		<Pair>
+			<key>highlight</key>
+			<styleUrl>#125</styleUrl>
+		</Pair>
+	</StyleMap>
+	<Style id="111">
+		<IconStyle>
+			<Icon>
+				<href>http://www.oruxmaps.com/iconos/wpts_pin1.png</href>
+			</Icon>
+			<hotSpot x="0.5" y="0" xunits="fraction" yunits="fraction"/>
+		</IconStyle>
+		<BalloonStyle>
+			<text><![CDATA[<p align="left"><font size="+1"><b>$[name]</b></font></p> <p align="left">$[description]</p>]]></text>
+		</BalloonStyle>
+	</Style>
+	<Style id="112">
+		<IconStyle>
+			<Icon>
+				<href>http://www.oruxmaps.com/iconos/wpts_pin1.png</href>
+			</Icon>
+			<hotSpot x="0.5" y="0" xunits="fraction" yunits="fraction"/>
+		</IconStyle>
+		<BalloonStyle>
+			<text><![CDATA[<p align="left"><font size="+1"><b>$[name]</b></font></p> <p align="left">$[description]</p>]]></text>
+		</BalloonStyle>
+	</Style>
+	<Style id="123">
+		<IconStyle>
+			<Icon>
+				<href>http://www.oruxmaps.com/iconos/wpts_pin1.png</href>
+			</Icon>
+			<hotSpot x="0.5" y="0" xunits="fraction" yunits="fraction"/>
+		</IconStyle>
+		<BalloonStyle>
+			<text><![CDATA[<p align="left"><font size="+1"><b>$[name]</b></font></p> <p align="left">$[description]</p>]]></text>
+		</BalloonStyle>
+	</Style>
+	<Placemark>
+		<name>代春茂</name>
+		<styleUrl>#msn_ylw-pushpin611173</styleUrl>
+		<LineString>
+			<tessellate>1</tessellate>
+			<coordinates>
+				120.0759551144609,37.34841405950259,0 120.0734165086172,37.34642892534441,0 120.0711471939273,37.34477506232813,0 120.0695077797911,37.34331925515568,0 120.0676536365401,37.34127368937742,0 120.0653870744566,37.33911087466908,0 120.0639833045632,37.33698118612716,0 120.0631422237691,37.33518584818162,0 120.06182,37.33276,0 120.06129,37.33197,0 120.06069,37.33117,0 120.0602,37.33044,0 120.05983,37.32994,0 120.0594,37.32928,0 120.05888,37.32853,0 120.05838,37.32769,0 120.05796,37.32703,0 120.05741,37.32623,0 120.05684,37.32539,0 120.05621,37.32455,0 120.05516,37.32311,0 120.0539410830004,37.32147842915177,0 120.0533899916446,37.32082134063688,0 120.0529680369346,37.32041967591241,0 120.05025,37.31841,0 120.04909,37.31781,0 120.04734,37.31745,0 120.04642,37.3171,0 120.04593,37.31665,0 120.04541,37.31617,0 120.04536,37.31584,0 120.04527,37.31438,0 120.04467,37.31169,0 120.04393,37.30886,0 120.04323,37.30733,0 120.04272,37.30474,0 120.04209,37.3019,0 120.04182,37.30046,0 120.04138,37.29793,0 120.04082,37.29478,0 120.04005,37.29243,0 120.0394148306361,37.29108801060229,0 120.0389396052707,37.29102677504547,0 120.0369762080247,37.2906300147012,0 120.0362655908178,37.28863522648604,0 120.0359,37.28732,0 120.03577,37.28658,0 120.03514,37.28202,0 120.03343,37.28072,0 120.03179,37.27931,0 120.02634,37.27508,0 120.02432,37.27343,0 120.0156397544084,37.26554605001553,0 120.0129444922967,37.26313546619438,0 120.0124147872765,37.26259971010102,0 120.0074676873483,37.25671748734715,0 120.0060657061892,37.25496417512381,0 120.005935496402,37.2548288922766,0 120.0059106948429,37.2548060999603,0 120.0058059540535,37.25467165409185,0 120.00282,37.2507,0 120.00057,37.24815,0 119.99992,37.2462,0 119.9976227166859,37.24266452417389,0 119.9967275704936,37.24184568006413,0 119.9963034196652,37.24152208514443,0 119.9960923296759,37.24127121044378,0 119.99522,37.23988,0 119.99482,37.23914,0 119.9903666968133,37.23345984919981,0 119.9878398980203,37.23010802790871,0 119.9872351329679,37.22900805507049,0 
+			</coordinates>
+		</LineString>
+	</Placemark>
+	<Placemark>
+		<name>未命名地标</name>
+		<open>1</open>
+		<LookAt>
+			<longitude>120.0700074580194</longitude>
+			<latitude>37.34370569753474</latitude>
+			<altitude>0</altitude>
+			<heading>-0.0573948303224559</heading>
+			<tilt>38.62500678641059</tilt>
+			<range>1546.424818847996</range>
+			<gx:altitudeMode>relativeToSeaFloor</gx:altitudeMode>
+		</LookAt>
+		<styleUrl>#162</styleUrl>
+		<Point>
+			<gx:drawOrder>1</gx:drawOrder>
+			<coordinates>120.0710747361615,37.34470811989066,0</coordinates>
+		</Point>
+	</Placemark>
+	<Placemark>
+		<name>张林瑞35朱桥镇谭家村阴保桩南土路</name>
+		<open>1</open>
+		<styleUrl>#166</styleUrl>
+		<Point>
+			<altitudeMode>absolute</altitudeMode>
+			<coordinates>120.06398,37.336865,61.2</coordinates>
+		</Point>
+	</Placemark>
+	<Placemark>
+		<name>代春茂20莱州站后面水泥路边</name>
+		<open>1</open>
+		<styleUrl>#137</styleUrl>
+		<Point>
+			<altitudeMode>absolute</altitudeMode>
+			<coordinates>119.99037,37.2334767,29.81</coordinates>
+		</Point>
+	</Placemark>
+	<Placemark>
+		<name>代春茂19程郭镇前苏村路边阴保桩处</name>
+		<styleUrl>#113</styleUrl>
+		<Point>
+			<altitudeMode>absolute</altitudeMode>
+			<coordinates>119.99483,37.23895,30.11</coordinates>
+		</Point>
+	</Placemark>
+	<Placemark>
+		<name>代春茂18程郭镇前苏村住宅房隐患点处</name>
+		<styleUrl>#113</styleUrl>
+		<Point>
+			<altitudeMode>absolute</altitudeMode>
+			<coordinates>119.9966,37.241825,27.11</coordinates>
+		</Point>
+	</Placemark>
+	<Placemark>
+		<name>代春茂17程郭镇孟家村南水泥路边</name>
+		<styleUrl>#113</styleUrl>
+		<Point>
+			<altitudeMode>absolute</altitudeMode>
+			<coordinates>119.99839,37.2437083,31.91</coordinates>
+		</Point>
+	</Placemark>
+	<Placemark>
+		<name>代春茂16程郭镇孟家村南阴保桩处</name>
+		<styleUrl>#113</styleUrl>
+		<Point>
+			<altitudeMode>absolute</altitudeMode>
+			<coordinates>120.0000533,37.2462167,27.07</coordinates>
+		</Point>
+	</Placemark>
+	<Placemark>
+		<name>代春茂15程郭镇后苏村东土路养鸡场处</name>
+		<styleUrl>#113</styleUrl>
+		<Point>
+			<altitudeMode>absolute</altitudeMode>
+			<coordinates>120.0029033,37.25072,20.6</coordinates>
+		</Point>
+	</Placemark>
+	<Placemark>
+		<name>代春茂14程郭镇后苏村养鸡场隐患点处门口</name>
+		<styleUrl>#113</styleUrl>
+		<Point>
+			<altitudeMode>absolute</altitudeMode>
+			<coordinates>120.0060567,37.2547883,35.89</coordinates>
+		</Point>
+	</Placemark>
+	<Placemark>
+		<name>代春茂13程郭镇后苏村养鸡场隐患点处北土路</name>
+		<styleUrl>#119</styleUrl>
+		<Point>
+			<altitudeMode>absolute</altitudeMode>
+			<coordinates>120.0073741747004,37.256725172563,36.42</coordinates>
+		</Point>
+	</Placemark>
+	<Placemark>
+		<name>代春茂12平里店镇曹家埠村南樱桃园北门口</name>
+		<styleUrl>#113</styleUrl>
+		<Point>
+			<altitudeMode>absolute</altitudeMode>
+			<coordinates>120.0125283,37.26283,19.8</coordinates>
+		</Point>
+	</Placemark>
+	<Placemark>
+		<name>代春茂11平里店镇曹家埠村东养猪场处土路</name>
+		<styleUrl>#113</styleUrl>
+		<Point>
+			<altitudeMode>absolute</altitudeMode>
+			<coordinates>120.0163117,37.2660217,30.2</coordinates>
+		</Point>
+	</Placemark>
+	<Placemark>
+		<name>代春茂10平里店镇曹家埠村东土路井房处</name>
+		<styleUrl>#113</styleUrl>
+		<Point>
+			<altitudeMode>absolute</altitudeMode>
+			<coordinates>120.0203817,37.2699817,21.5</coordinates>
+		</Point>
+	</Placemark>
+	<Placemark>
+		<name>代春茂9平里店镇曹家埠村东阴保桩处土路边</name>
+		<styleUrl>#113</styleUrl>
+		<Point>
+			<altitudeMode>absolute</altitudeMode>
+			<coordinates>120.0245383,37.2734533,30.7</coordinates>
+		</Point>
+	</Placemark>
+	<Placemark>
+		<name>代春茂8平里店镇中学南公路边</name>
+		<styleUrl>#113</styleUrl>
+		<Point>
+			<altitudeMode>absolute</altitudeMode>
+			<coordinates>120.0266283,37.2751283,22.3</coordinates>
+		</Point>
+	</Placemark>
+	<Placemark>
+		<name>代春茂7平里店镇红光村进村路口</name>
+		<styleUrl>#116</styleUrl>
+		<Point>
+			<altitudeMode>absolute</altitudeMode>
+			<coordinates>120.0349947467506,37.28206899550174,25.7</coordinates>
+		</Point>
+	</Placemark>
+	<Placemark>
+		<name>代春茂6平里店镇店王村东南敬老院门口</name>
+		<styleUrl>#113</styleUrl>
+		<Point>
+			<altitudeMode>absolute</altitudeMode>
+			<coordinates>120.0356717,37.285025,24.4</coordinates>
+		</Point>
+	</Placemark>
+	<Placemark>
+		<name>代春茂5平里店镇店王村东土路</name>
+		<styleUrl>#113</styleUrl>
+		<Point>
+			<altitudeMode>absolute</altitudeMode>
+			<coordinates>120.036305,37.288715,26.4</coordinates>
+		</Point>
+	</Placemark>
+	<Placemark>
+		<name>代春茂4平里店镇洼徐家村村碑处</name>
+		<styleUrl>#113</styleUrl>
+		<Point>
+			<altitudeMode>absolute</altitudeMode>
+			<coordinates>120.039125,37.2912117,16.2</coordinates>
+		</Point>
+	</Placemark>
+	<Placemark>
+		<name>代春茂3平里店镇贾邓战家村种粮大护阴保桩处</name>
+		<styleUrl>#113</styleUrl>
+		<Point>
+			<altitudeMode>absolute</altitudeMode>
+			<coordinates>120.04187,37.30056,29.2</coordinates>
+		</Point>
+	</Placemark>
+	<Placemark>
+		<name>代春茂2平里店镇贾邓杨家村东阴保桩处</name>
+		<styleUrl>#113</styleUrl>
+		<Point>
+			<altitudeMode>absolute</altitudeMode>
+			<coordinates>120.0435217,37.30755,22.9</coordinates>
+		</Point>
+	</Placemark>
+	<Placemark>
+		<name>代春茂1大娇家加油站西206路边</name>
+		<styleUrl>#113</styleUrl>
+		<Point>
+			<altitudeMode>absolute</altitudeMode>
+			<coordinates>120.0454717,37.31626,20.2</coordinates>
+		</Point>
+	</Placemark>
+	<Placemark>
+		<name>未命名地标</name>
+		<LookAt>
+			<longitude>120.0631581845019</longitude>
+			<latitude>37.33371829934493</latitude>
+			<altitude>0</altitude>
+			<heading>-0.04954537999368647</heading>
+			<tilt>32.71789579888879</tilt>
+			<range>1293.895620924431</range>
+			<gx:altitudeMode>relativeToSeaFloor</gx:altitudeMode>
+		</LookAt>
+		<styleUrl>#m_ylw-pushpin</styleUrl>
+		<Point>
+			<gx:drawOrder>1</gx:drawOrder>
+			<coordinates>120.0631144660189,37.33514970740152,0</coordinates>
+		</Point>
+	</Placemark>
+	<Placemark>
+		<name>未命名地标</name>
+		<LookAt>
+			<longitude>119.9903348288564</longitude>
+			<latitude>37.23358165392693</latitude>
+			<altitude>0</altitude>
+			<heading>-0.2033274300799534</heading>
+			<tilt>24.79553575491208</tilt>
+			<range>1547.741073792437</range>
+			<gx:altitudeMode>relativeToSeaFloor</gx:altitudeMode>
+		</LookAt>
+		<styleUrl>#19</styleUrl>
+		<Point>
+			<gx:drawOrder>1</gx:drawOrder>
+			<coordinates>119.9917355410496,37.23523175461583,0</coordinates>
+		</Point>
+	</Placemark>
+	<Placemark>
+		<name>未命名地标</name>
+		<LookAt>
+			<longitude>119.988557106618</longitude>
+			<latitude>37.23070275521046</latitude>
+			<altitude>0</altitude>
+			<heading>-0.2044030611176184</heading>
+			<tilt>24.79553656954994</tilt>
+			<range>1547.957307799708</range>
+			<gx:altitudeMode>relativeToSeaFloor</gx:altitudeMode>
+		</LookAt>
+		<styleUrl>#120</styleUrl>
+		<Point>
+			<gx:drawOrder>1</gx:drawOrder>
+			<coordinates>119.9877851715777,37.22883118997072,0</coordinates>
+		</Point>
+	</Placemark>
+	<Placemark>
+		<name>未命名地标</name>
+		<LookAt>
+			<longitude>120.0505014652768</longitude>
+			<latitude>37.32087254280361</latitude>
+			<altitude>0</altitude>
+			<heading>-0.1669013798091144</heading>
+			<tilt>24.79557172326224</tilt>
+			<range>1557.289699463731</range>
+			<gx:altitudeMode>relativeToSeaFloor</gx:altitudeMode>
+		</LookAt>
+		<styleUrl>#110</styleUrl>
+		<Point>
+			<gx:drawOrder>1</gx:drawOrder>
+			<coordinates>120.0502823006758,37.31851007587837,0</coordinates>
+		</Point>
+	</Placemark>
+	<Placemark>
+		<name>未命名地标</name>
+		<LookAt>
+			<longitude>120.0505014652768</longitude>
+			<latitude>37.32087254280361</latitude>
+			<altitude>0</altitude>
+			<heading>-0.1669013798091144</heading>
+			<tilt>24.79557172326224</tilt>
+			<range>1557.289699463731</range>
+			<gx:altitudeMode>relativeToSeaFloor</gx:altitudeMode>
+		</LookAt>
+		<styleUrl>#118</styleUrl>
+		<Point>
+			<gx:drawOrder>1</gx:drawOrder>
+			<coordinates>120.0533973378445,37.32099673799082,0</coordinates>
+		</Point>
+	</Placemark>
+	<Placemark>
+		<name>未命名地标</name>
+		<LookAt>
+			<longitude>120.0574169667006</longitude>
+			<latitude>37.32754776965908</latitude>
+			<altitude>0</altitude>
+			<heading>-0.1627086061236671</heading>
+			<tilt>24.79563165518821</tilt>
+			<range>1545.903228211922</range>
+			<gx:altitudeMode>relativeToSeaFloor</gx:altitudeMode>
+		</LookAt>
+		<styleUrl>#115</styleUrl>
+		<Point>
+			<gx:drawOrder>1</gx:drawOrder>
+			<coordinates>120.0582747588607,37.32770027856656,0</coordinates>
+		</Point>
+	</Placemark>
+	<Placemark>
+		<name>未命名地标</name>
+		<LookAt>
+			<longitude>120.0756723945939</longitude>
+			<latitude>37.34812314685105</latitude>
+			<altitude>0</altitude>
+			<heading>-0.01295257975513918</heading>
+			<tilt>25.77698949898926</tilt>
+			<range>299.4897419810234</range>
+			<gx:altitudeMode>relativeToSeaFloor</gx:altitudeMode>
+		</LookAt>
+		<styleUrl>#117</styleUrl>
+		<Point>
+			<gx:drawOrder>1</gx:drawOrder>
+			<coordinates>120.0759494955801,37.34842134210015,0</coordinates>
+		</Point>
+	</Placemark>
+</Document>
+</kml>

@@ -1,0 +1,307 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <data>
+
+        <record id="danger_manager_tree" model="ir.ui.view">
+            <field name="name">danger_manager.tree</field>
+            <field name="model">inspection.danger_manager</field>
+            <field name="arch" type="xml">
+                <tree create="0" unlink="0" decoration-success="state=='agree'" decoration-danger="state=='untreated'">
+                    <field name="find_staff" options="{'no_open':True}"/>
+                    <field name="patrol_area" options="{'no_open':True}"/>
+                    <field name="patrol_section" options="{'no_open':True}"/>
+                    <field name="danger_type" options="{'no_open':True}"/>
+                    <field name="danger_level" options="{'no_open':True}"/>
+                    <field name="report_time"/>
+                    <field name="state"/>
+                </tree>
+            </field>
+        </record>
+        <record id="danger_manager_form" model="ir.ui.view">
+            <field name="name">danger_manager.form</field>
+            <field name="model">inspection.danger_manager</field>
+            <field name="arch" type="xml">
+                <form create="0" delete="0" edit="0">
+                    <header>
+                        <button name="action_agree" string="选择维修人员" type="object" states="untreated"/>
+                        <button name="action_refuse" string="不用处理" type="object" states="untreated"/>
+                        <field name="state" widget="statusbar" statusbar_visible="untreated"/>
+                    </header>
+                    <sheet>
+                        <group>
+                            <field name="find_staff" options="{'no_open':True}"/>
+                            <field name="patrol_area" options="{'no_open':True}"/>
+                            <field name="patrol_section" options="{'no_open':True}"/>
+                            <field name="danger_type" options="{'no_open':True}"/>
+                            <field name="danger_level" options="{'no_open':True}"/>
+                            <field name="detail"/>
+                            <field name="report_time"/>
+                            <field name="latitude"/>
+                            <field name="longitude"/>
+                            <field name="address"/>
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+        <record id="danger_manager_search" model="ir.ui.view">
+            <field name="name">danger_manager.search</field>
+            <field name="model">inspection.danger_manager</field>
+            <field name="arch" type="xml">
+                <search>
+                    <field name="find_staff"/>
+                    <field name="patrol_area"/>
+                    <field name="patrol_section"/>
+                    <field name="danger_type"/>
+                    <field name="danger_level"/>
+                    <field name="report_time"/>
+                    <field name="state"/>
+
+                    <separator/>
+                    <filter name="untreated" domain="[('state','=','untreated')]" string="未处理"/>
+                    <filter name="refuse" domain="[('state','=','refuse')]" string="未同意维修"/>
+                    <filter name="agree" domain="[('state','=','agree')]" string="已同意维修"/>
+                    <separator/>
+
+                    <group expand="0" string="分组">
+                        <filter name="state" string="状态" context="{'group_by':'state'}"/>
+                        <filter name="level" string="隐患等级" context="{'group_by':'level'}"/>
+                        <filter name="category" string="隐患类别" context="{'group_by':'category'}"/>
+                        <filter name="find_employee" string="发现人" context="{'group_by':'find_employee'}"/>
+                    </group>
+                </search>
+            </field>
+        </record>
+
+        <record id="report_danger_tree" model="ir.ui.view">
+            <field name="name">report_danger.tree</field>
+            <field name="model">inspection.report_danger</field>
+            <field name="arch" type="xml">
+                <tree>
+                    <field name="staff"/>
+                    <field name="danger_type"/>
+                    <field name="danger_level"/>
+                    <field name="create_time"/>
+                </tree>
+            </field>
+        </record>
+        <record id="report_danger_form" model="ir.ui.view">
+            <field name="name">report_danger.form</field>
+            <field name="model">inspection.report_danger</field>
+            <field name="arch" type="xml">
+                <form>
+                    <sheet>
+                        <group>
+                            <field name="staff" options="{'no_open':True}" readonly="1"/>
+                            <field name="danger_type" options="{'no_open':True,'no_create_edit':True}"
+                                   attrs="{'readonly': [('readonly','=',True)]}"/>
+                            <field name="danger_level" options="{'no_open':True,'no_create_edit':True}"
+                                   attrs="{'readonly': [('readonly','=',True)]}"/>
+                            <field name="latitude" invisible="1"/>
+                            <field name="longitude" invisible="1"/>
+                            <field name="create_time" readonly="1"/>
+                            <field name="detail" attrs="{'readonly': [('readonly','=',True)]}"/>
+                            <field name="readonly" invisible="1"/>
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <record id="repair_manager_tree" model="ir.ui.view">
+            <field name="name">repair_manager.tree</field>
+            <field name="model">inspection.repair_manager</field>
+            <field name="arch" type="xml">
+                <tree create="0" decoration-success="state=='complete'">
+                    <field name="category"/>
+                    <field name="level"/>
+                    <field name="find_employee"/>
+                    <field name="repair_employee"/>
+                    <field name="state"/>
+                    <field name="upload_time"/>
+                </tree>
+            </field>
+        </record>
+        <record id="repair_manager_form" model="ir.ui.view">
+            <field name="name">repair_manager.form</field>
+            <field name="model">inspection.repair_manager</field>
+            <field name="arch" type="xml">
+                <form create="0" edit="0" delete="0">
+                    <header>
+                        <button name="action_process" string="完成" type="object" states="processing"/>
+                        <button name="action_repair_map" string="维修地图" type="object"/>
+                        <field name="state" widget="statusbar" statusbar_visible="unassigned,processing,complete"/>
+                    </header>
+                    <sheet>
+                        <group>
+                            <group>
+                                <field name="category" options="{'no_open':True}"/>
+                                <field name="level" options="{'no_open':True}"/>
+                                <field name="find_employee" options="{'no_open':True}"/>
+                            </group>
+                            <group>
+                                <field name="repair_employee" options="{'no_open':True}"/>
+                                <field name="upload_time"/>
+                                <field name="danger" invisible="1"/>
+                            </group>
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+        <record id="repair_manager_search" model="ir.ui.view">
+            <field name="name">repair_manager.search</field>
+            <field name="model">inspection.repair_manager</field>
+            <field name="arch" type="xml">
+                <search>
+                    <field name="category"/>
+                    <field name="level"/>
+                    <field name="find_employee"/>
+                    <field name="repair_employee"/>
+                    <field name="state"/>
+                    <field name="upload_time"/>
+
+                    <separator/>
+                    <filter name="processing" domain="[('state','=','processing')]" string="处理中"/>
+                    <filter name="complete" domain="[('state','=','complete')]" string="已完成"/>
+                    <separator/>
+
+                    <group expand="0" string="分组">
+                        <filter name="state" string="状态" context="{'group_by':'state'}"/>
+                        <filter name="level" string="隐患等级" context="{'group_by':'level'}"/>
+                        <filter name="category" string="隐患类别" context="{'group_by':'category'}"/>
+                        <filter name="find_employee" string="发现人" context="{'group_by':'find_employee'}"/>
+                    </group>
+                </search>
+            </field>
+        </record>
+
+        <record id="danger_category_kanban" model="ir.ui.view">
+            <field name="name">danger_category.kanban</field>
+            <field name="model">inspection.danger_category</field>
+            <field name="arch" type="xml">
+                <kanban>
+                    <field name="name"/>
+                    <field name="image"/>
+                    <field name="remark"/>
+                    <templates>
+                        <t t-name="kanban-box">
+                            <div class="oe_kanban_global_click">
+                                <div class="o_kanban_image" style="height: 50px; overflow: hidden; text-align: center">
+                                    <img t-att-src="kanban_image('inspection.danger_category', 'image', record.id.value)"/>
+                                </div>
+                                <div t-attf-class="oe_kanban_details">
+                                    隐患级别名称:
+                                    <strong>
+                                        <field name="name"/>
+                                    </strong>
+                                    <br/>
+                                    备注:
+                                    <field name="remark"/>
+                                </div>
+                            </div>
+                        </t>
+                    </templates>
+                </kanban>
+            </field>
+        </record>
+        <record id="danger_category_form" model="ir.ui.view">
+            <field name="name">danger_category.form</field>
+            <field name="model">inspection.danger_category</field>
+            <field name="arch" type="xml">
+                <form>
+                    <sheet>
+                        <group>
+                            <field name="name"/>
+                            <label for="image"/>
+                            <div style="width: 100px; height: 100px; overflow:hidden;">
+                                <field name="image" widget="image" class="oe_image"/>
+                            </div>
+                            <field name="remark"/>
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+        <record id="danger_category_search" model="ir.ui.view">
+            <field name="name">danger_category.search</field>
+            <field name="model">inspection.danger_category</field>
+            <field name="arch" type="xml">
+                <search>
+                    <field name="name"/>
+                </search>
+            </field>
+        </record>
+
+        <record id="danger_level_tree" model="ir.ui.view">
+            <field name="name">danger_level.tree</field>
+            <field name="model">inspection.danger_level</field>
+            <field name="arch" type="xml">
+                <tree>
+                    <field name="name"/>
+                    <field name="remark"/>
+                </tree>
+            </field>
+        </record>
+        <record id="danger_level_form" model="ir.ui.view">
+            <field name="name">danger_level.form</field>
+            <field name="model">inspection.danger_level</field>
+            <field name="arch" type="xml">
+                <form>
+                    <sheet>
+                        <group>
+                            <field name="name"/>
+                            <field name="remark"/>
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <record id="report_danger_action" model="ir.actions.act_window">
+            <field name="name">隐患上报</field>
+            <field name="res_model">inspection.report_danger</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+            <field name="domain">[("staff.resource_id.user_id.id","=",uid)]</field>
+        </record>
+        <record id="danger_manager_action" model="ir.actions.act_window">
+            <field name="name">隐患管理</field>
+            <field name="res_model">inspection.danger_manager</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+            <field name="context">{'search_default_untreated':1}</field>
+        </record>
+        <record id="repair_manager_action" model="ir.actions.act_window">
+            <field name="name">维修管理</field>
+            <field name="res_model">inspection.repair_manager</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form,search</field>
+            <field name="context">{'search_default_processing':1}</field>
+            <field name="domain">[("repair_employee.id","=",uid)]</field>
+        </record>
+        <record id="danger_category_action" model="ir.actions.act_window">
+            <field name="name">隐患类别</field>
+            <field name="res_model">inspection.danger_category</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">kanban,form,search</field>
+            <field name="help" type="html">
+                <p class="oe_view_nocontent_create">
+                    现在还没有隐患类别，创建你的第一个隐患类别。
+                </p>
+            </field>
+        </record>
+        <record id="danger_level_action" model="ir.actions.act_window">
+            <field name="name">隐患级别</field>
+            <field name="res_model">inspection.danger_level</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+            <field name="help" type="html">
+                <p class="oe_view_nocontent_create">
+                    现在还没有隐患级别，创建你的第一个隐患级别。
+                </p>
+            </field>
+        </record>
+
+    </data>
+</odoo>

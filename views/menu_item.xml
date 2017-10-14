@@ -1,0 +1,172 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<dotop>
+    <data>
+
+        <record id="inspection.google_map_action" model="ir.actions.client">
+            <field name="name">谷歌地图</field>
+            <field name="tag">google_map</field>
+        </record>
+        <record id="inspection.patrol_track_action" model="ir.actions.client">
+            <field name="name">巡检轨迹</field>
+            <field name="tag">patrol_track</field>
+        </record>
+
+        <menuitem
+                id="menu_root"
+                name="巡检系统"
+                web_icon="inspection,static/description/icon.png"
+                groups="group_inspection_manager,group_inspection_user"
+                sequence="0"/>
+
+        <menuitem
+                id="menu_google_map"
+                name="实时监控"
+                parent="menu_root"
+                action="inspection.google_map_action"
+                sequence="0"/>
+
+
+        <menuitem
+                id="menu_manual_patrol"
+                name="人工巡检"
+                parent="menu_root"
+                groups="group_inspection_manager,group_inspection_user"
+                sequence="1"/>
+        <menuitem
+                id="item_patrol_track"
+                name="巡检轨迹"
+                parent="menu_manual_patrol"
+                action="inspection.patrol_track_action"
+                sequence="0"/>
+        <menuitem
+                id="item_patrol_report"
+                name="巡检报表"
+                parent="menu_manual_patrol"
+                sequence="1"
+                groups="group_inspection_manager"/>
+        <menuitem
+                id="item_attendance_time"
+                name="考勤时间"
+                parent="menu_manual_patrol"
+                action="attendance_time_action"
+                sequence="2"
+                groups="group_inspection_manager,group_inspection_user"/>
+
+
+        <menuitem
+                id="menu_danger_manager"
+                name="隐患管理"
+                parent="menu_root"
+                groups="group_inspection_manager,group_inspection_user"
+                sequence="2"/>
+        <menuitem
+                id="menu_report_danger"
+                name="隐患上报"
+                parent="menu_danger_manager"
+                action="report_danger_action"
+                sequence="0"
+                groups="group_inspection_manager,group_staff_user"/>
+        <menuitem
+                id="menu_danger_manage"
+                name="隐患管理"
+                parent="menu_danger_manager"
+                action="danger_manager_action"
+                groups="group_inspection_manager"/>
+        <menuitem
+                id="menu_repair_manager"
+                name="维修管理"
+                parent="menu_danger_manager"
+                action="repair_manager_action"
+                groups="group_inspection_manager,group_repair_user"/>
+        <menuitem
+                id="menu_danger_category"
+                name="隐患类别"
+                parent="menu_danger_manager"
+                action="danger_category_action"
+                groups="group_inspection_manager"/>
+        <menuitem
+                id="menu_danger_level"
+                name="隐患级别"
+                parent="menu_danger_manager"
+                action="danger_level_action"
+                groups="group_inspection_manager"/>
+
+
+        <menuitem
+                id="menu_system_manager"
+                name="系统管理"
+                parent="menu_root"
+                groups="group_inspection_manager,group_inspection_user"
+                sequence="3"/>
+        <menuitem
+                id="item_gps_manager"
+                name="GPS 管理"
+                parent="menu_system_manager"
+                action="gps_manager_action"
+                groups="group_inspection_manager,group_inspection_user"
+                sequence="3"/>
+        <menuitem
+                id="item_system_user"
+                name="汽车在线用户"
+                parent="menu_system_manager"
+                action="system_user_action"
+                groups="group_inspection_manager,group_super_user"
+                sequence="4"/>
+        <menuitem
+                id="item_patrol_employee"
+                name="员工管理"
+                parent="menu_system_manager"
+                action="hr_employee_action"
+                groups="group_inspection_manager,group_inspection_user"/>
+        <menuitem
+                id="item_employee_department"
+                name="部门"
+                parent="menu_system_manager"
+                action="hr_department_action"
+                groups="group_inspection_manager,group_inspection_user"/>
+        <menuitem
+                id="item_employee_job"
+                name="角色管理"
+                parent="menu_system_manager"
+                action="hr_job_action"
+                groups="group_inspection_manager,group_inspection_user"/>
+
+
+        <menuitem
+                id="menu_super_user"
+                name="超级用户"
+                parent="menu_root"
+                sequence="4"
+                groups="group_super_user,group_inspection_manager"/>
+        <menuitem
+                id="item_patrol_section"
+                name="巡线段"
+                parent="menu_super_user"
+                action="patrol_section_action"
+                groups="group_super_user,group_inspection_manager"
+                sequence="0"/>
+        <menuitem
+                id="item_patrol_point"
+                name="管道点"
+                parent="menu_super_user"
+                action="patrol_point_action"
+                groups="group_super_user,group_inspection_manager"
+                sequence="1"/>
+        <menuitem
+                id="item_staff_point_kml"
+                name="必经点 kml"
+                parent="menu_super_user"
+                action="staff_point_kml_action"
+                groups="group_inspection_sudo,group_inspection_manager"
+                sequence="2"/>
+        <menuitem
+                id="item_staff_point"
+                name="巡线员必经点"
+                parent="menu_super_user"
+                action="staff_point_action"
+                groups="group_super_user,group_inspection_manager"
+                sequence="3"/>
+
+
+    </data>
+</dotop>
