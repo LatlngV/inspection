@@ -12,14 +12,10 @@ var map = null;
  */
 function initGoogleMap() {
     map = new google.maps.Map(document.getElementById("odoo-google-map"), {
-        zoom: 15,
+        zoom: 9,
         center: {lat: 36.9222760000, lng: 119.1296490000},
-        mapTypeId: google.maps.MapTypeId.ROADMAP
+        mapTypeId: google.maps.MapTypeId.HYBRID
     });
-    var marker = new google.maps.Marker({
-        position: {lat: 36.9222760000, lng: 119.1296490000}
-    });
-    marker.setMap(map);
 
     /* 根据坐标画管道 */
     drawPipeline(map);

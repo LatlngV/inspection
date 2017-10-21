@@ -11,8 +11,9 @@
                     <field name="affiliated_lines"/>
                     <field name="belong_area"/>
                     <field name="patrol_employee"/>
-                    <field name="remark"/>
+                    <field name="is_contain_staff_point"/>
                     <field name="create_date"/>
+                    <field name="remark"/>
                 </tree>
             </field>
         </record>
@@ -32,6 +33,7 @@
                         </group>
                         <group>
                             <field name="area_name"/>
+                            <field name="is_contain_staff_point" attrs="{'readonly': [('is_parse', '=', True)]}"/>
                             <field name="create_date"/>
                             <field name="remark"/>
                             <field name="stream" invisible="1"/>
@@ -183,6 +185,7 @@
             <field name="name">巡线点</field>
             <field name="res_model">inspection.patrol_point</field>
             <field name="view_type">form</field>
+            <field name="limit">20</field>
             <field name="view_mode">tree,form,search</field>
         </record>
         <record id="staff_point_kml_action" model="ir.actions.act_window">
@@ -195,6 +198,7 @@
             <field name="name">巡线员必经点</field>
             <field name="res_model">inspection.staff_point</field>
             <field name="view_type">form</field>
+            <field name="limit">20</field>
             <field name="view_mode">tree,form,search</field>
         </record>
 

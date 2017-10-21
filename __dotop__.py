@@ -8,9 +8,6 @@
     "version": "1.0",
     "depends": ["hr"],
     "website": "http://www.eyesw.cn",
-    "qweb": [
-        "static/src/xml/*.xml",
-    ],
     "data": [
         "security/inspection_security.xml",
         "security/ir.model.access.csv",
@@ -22,7 +19,9 @@
         "views/google_map_views.xml",
         "views/system_user_views.xml",
         "views/patrol_track_template.xml",
+        "views/staff_report_template.xml",
         "views/repair_map_template.xml",
+        "views/staff_task_detail_template.xml",
         "views/gps_manager_views.xml",
         "data/timing_task_views.xml",
         "views/menu_item.xml",

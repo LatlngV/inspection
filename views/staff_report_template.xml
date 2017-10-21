@@ -1,94 +1,114 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <odoo>
 
-    <template id="dotop_patrol_track">
+    <template id="dotop_staff_report">
         &lt;!DOCTYPE html&gt;
         <html>
             <head>
                 <meta charset="utf-8"/>
                 <meta name="viewport" content="initial-scale=1.0, user-scalable=no"/>
                 <title>报表</title>
+
+                <link rel="stylesheet" type="text/css" href="/inspection/static/src/css/bootstrap.min.css"/>
+                <link rel="stylesheet" type="text/css" href="/inspection/static/src/css/staff_report.css"/>
+                <script type="text/javascript" src="/inspection/static/src/js/jquery-1.7.2.min.js"></script>
+                <script type="text/javascript" src="/inspection/static/src/js/bootstrap.js"></script>
+                <script type="text/javascript" src="/inspection/static/src/js/echarts.min.js"></script>
+                <script type="text/javascript" src="/inspection/static/src/js/my97datepicker/WdatePicker.js"></script>
             </head>
             <body>
-                <section class="content">
-                    <form id="form1" action="" method="get">
-                        <input id="area" type="hidden" name="area" value="2"/>
-                        <input id="date_type" type="hidden" name="date_type" value="3"/>
-                        <div class="form-group col-xs-5">
-                            <label style="display: inline-block;">选择日期</label>
-                            <input name="date" onclick="WdatePicker({dateFmt:'yyyy-MM-dd'})"
-                                   style="display: inline-block; width: 70%;" type="text" class="form-control"/>
-                        </div>
-                        <div class="form-group col-xs-5 hide">
-                            <label style="display: inline-block;">选择月份</label>
-                            <input name="month" onclick="WdatePicker({dateFmt:'yyyy-MM'})"
-                                   style="display: inline-block; width: 70%;" type="text" class="form-control"/>
-                        </div>
-                        <div class="form-group col-xs-5 hide">
-                            <label style="display: inline-block;">选择年份</label>
-                            <input name="year" onclick="WdatePicker({dateFmt:'yyyy'})"
-                                   style="display: inline-block; width: 70%;" type="text" class="form-control"/>
-                        </div>
-                        <button type="button" class="btn btn-info btn-flat" id="day_report">日报表</button>
-                        <button type="button" class="btn btn-info btn-flat" id="month_report">月报表</button>
-                        <button type="button" class="btn btn-flat" id="year_report">年报表</button>
-                        &nbsp;&nbsp;
-                        <button type="button" class="btn btn-flat" id="list_view">列表</button>
-                        <button type="button" class="btn btn-warning btn-flat" id="bar_view">柱状图</button>
-                    </form>
-                    <div class="row">
-                        <div class="col-xs-12">
-                            <div class="box box-primary">
-                                <ul class="nav nav-tabs">
+                <div style="margin-top: 5px;">
+                    <label style="display: inline-block; margin-left: 25px;">选择日期</label>
+                    <input style="display: inline-block; width: 200px;" type="text" id="select_date"
+                           onclick="WdatePicker({dateFmt:'yyyy-MM-dd'})"/>
+                    <input style="display: none; width: 200px;" type="text" id="select_month"
+                           onclick="select_year"/>
+                    <input style="display: none; width: 200px;" type="text" id="select_year"
+                           onclick="WdatePicker({dateFmt:'yyyy'})"/>
+                    <button type="button" class="btn btn-flat" id="day_report" style="margin-left: 50px;">
+                        日报表
+                    </button>
+                    <button type="button" class="btn btn-info btn-flat" id="month_report">月报表</button>
+                    <button type="button" class="btn btn-info btn-flat" id="year_report">年报表</button>
+                    <button type="button" class="btn btn-flat" id="list_view" style="margin-left: 50px;">列表</button>
+                    <button type="button" class="btn btn-warning btn-flat" id="bar_view">柱状图</button>
+                </div>
+                <div style="margin-top: 15px;">
+                    <ul id="tab_layout" class="nav nav-tabs" style="margin-left: 10px;">
 
-                                </ul>
+                    </ul>
+                </div>
+                <div id="report_list" style="margin-left: 10px; margin-right: 10px; margin-top: 5px;">
+                    <table class="table-bordered" align="center" valign="middle" width="100%">
+                        <thead>
+                            <tr height="30">
+                                <th rowspan="2">巡线员</th>
+                                <th rowspan="2">巡线区域</th>
+                                <th rowspan="2">管线长度(km)</th>
+                                <th rowspan="2">行驶里程(km)</th>
+                                <th rowspan="2">必经点</th>
+                                <th rowspan="2">任务量</th>
+                                <th colspan="2">规定范围</th>
+                                <th colspan="2">100米</th>
+                                <th colspan="2">200米</th>
+                                <th colspan="2">500米</th>
+                                <th colspan="2">1000米</th>
+                            </tr>
+                            <tr>
+                                <th>完成量</th>
+                                <th>完成率</th>
+                                <th>完成量</th>
+                                <th>完成率</th>
+                                <th>完成量</th>
+                                <th>完成率</th>
+                                <th>完成量</th>
+                                <th>完成率</th>
+                                <th>完成量</th>
+                                <th>完成率</th>
+                            </tr>
+                        </thead>
+                        <tbody id="staff_data">
+
+                        </tbody>
+                    </table>
+                </div>
+                <div style="margin-left: 10px; margin-right: 10px;">
+                    <div id="report_bar" style="width: 100%; height: 600px; display: none; border: 1px solid #000;">
+
+                    </div>
+                </div>
+                <div style="margin-left: 10px; margin-right: 10px;">
+                    <div id="report_circle" style="width: 100%; height: 600px; display: none; border: 1px solid #000;">
+
+                    </div>
+                </div>
+                <div class="modal fade" id="taskDetailModal" role="dialog">
+                    <div class="modal-dialog" style="width: 800px;">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span>×</span>
+                                </button>
+                                <h4 class="modal-title">巡线员必经点详情</h4>
+                            </div>
+                            <div class="modal-body" style="height: 600px; overflow-y: auto;">
                                 <table class="table table-striped table-bordered">
                                     <thead>
-                                        <tr>
-                                            <th rowspan="2">巡护人</th>
-                                            <th rowspan="2">巡线区域</th>
-                                            <th rowspan="2">管线长度(Km)</th>
-                                            <th rowspan="2">行驶里程(Km)</th>
-                                            <th rowspan="2">必经点</th>
-                                            <th rowspan="2">任务量</th>
-                                            <th colspan="2">规定范围</th>
-                                            <th colspan="2">100米</th>
-                                            <th colspan="2">200米</th>
-                                            <th colspan="2">500米</th>
-                                            <th colspan="2">1000米</th>
-                                        </tr>
-                                        <tr>
-                                            <th>完成量</th>
-                                            <th>完成率</th>
-                                            <th>完成量</th>
-                                            <th>完成率</th>
-                                            <th>完成量</th>
-                                            <th>完成率</th>
-                                            <th>完成量</th>
-                                            <th>完成率</th>
-                                            <th>完成量</th>
-                                            <th>完成率</th>
+                                        <tr id="taskDetailThead">
+                                            <th>必经点</th>
+                                            <th>经纬度坐标</th>
                                         </tr>
                                     </thead>
-                                    <tbody>
-                                        <tr>
+                                    <tbody id="taskDetailTbody">
 
-                                        </tr>
                                     </tbody>
                                 </table>
                             </div>
-                            <div class="box-body">
-                                <font color="red">&nbsp;颜色说明：0%-40%红色，40%-60%橙色，60%-80%黄色，80%-100%绿色。</font>
-                            </div>
-                            <div class="col-xs-12" align="right">
-                                <a href="http://121.42.136.94/admin/Chart/excel/3.html" class="btn btn-info">导出Excel</a>
-                            </div>
-                            <div class="box-footer clearfix">
-                            </div>
                         </div>
                     </div>
-                </section>
+                </div>
             </body>
+            <script type="text/javascript" src="/inspection/static/src/js/staff_report.js"></script>
         </html>
     </template>
 

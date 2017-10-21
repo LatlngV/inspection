@@ -1,9 +1,9 @@
-odoo.define("inspection.staff_report", function (require) {
+odoo.define("inspection.staff_task_detail", function (require) {
 
     var core = require("web.core");
     var Widget = require("web.Widget");
 
-    var StaffReport = Widget.extend({
+    var StaffTaskDetail = Widget.extend({
         start: function () {
             var height;
             if ($(".o_sub_menu")[0]) {
@@ -13,10 +13,10 @@ odoo.define("inspection.staff_report", function (require) {
                 var navbarHeight = $(".o_main_navbar")[0].clientHeight;
                 height = bodyHeight - navbarHeight;
             }
-            this.$el.append('<iframe src="/loading/google_map?flag=staff_report" width="100%" height="' + height + 'px"></iframe>');
+            this.$el.append('<iframe src="/loading/google_map?flag=staff_task_detail" width="100%" height="' + height + 'px"></iframe>');
         }
     });
 
-    core.action_registry.add("staff_report", StaffReport);
+    core.action_registry.add("staff_task_detail", StaffTaskDetail);
 
 });

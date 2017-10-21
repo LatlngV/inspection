@@ -26,6 +26,7 @@ class PatrolSection(models.Model):
     create_date = fields.Datetime(string=u"创建时间", default=fields.Datetime.now(), readonly=True)
     stream = fields.Integer(string=u"文件流", compute="_get_latlng")
     is_parse = fields.Boolean(string=u"是否解析", default=False)
+    is_contain_staff_point = fields.Boolean(string=u"是否包含员工必经点", default=False)
 
     _sql_constraints = [
         (u"文件名唯一",
@@ -49,7 +50,7 @@ class PatrolSection(models.Model):
 
         # 管线的点
         patrol_point = self.env["inspection.patrol_point"]
-
+        staff_point = self.env["inspection.staff_point"]
         """
             1. 解析 KML 文件
             2. 将 KML 文件中的数据写入到数据库中
@@ -61,6 +62,9 @@ class PatrolSection(models.Model):
                     file_path = "data/filestore/" + db_name + "/" + row["store_fname"]
                     file = open(file_path, "rb")
                     try:
+                        """
+                        获取巡线员管线的点
+                        """
                         # 整行整行的读取文本内容，将文本内容拼接成一行
                         file_list = file.readlines()
                         content = ""
@@ -80,29 +84,44 @@ class PatrolSection(models.Model):
                             latitude = latlng[1]
                             patrol_point.create({"point_name": u"未命名坐标", "belong_section": self.id,
                                                  "attendance_range": 50, "latitude": latitude, "longitude": longitude})
+                        """
+                        如果包含员工必经点，就获取员工必经点
+                        """
+                        if self.is_contain_staff_point:
+                            content_list = content.split("<Placemark>")
+                            for text in content_list:
+                                if "<Point>" in text:
+                                    """
+                                    拆分巡线员必经点的坐标
+                                    """
+                                    text_list = text.split("<coordinates>")
+                                    point = text_list[1].split("</coordinates>")
+                                    point_list = point[0].split(",")
 
+                                    """
+                                    获取必经点的名字
+                                    """
+                                    name_list = text_list[0].split("<name>")
+                                    name = name_list[1].split("</name>")
+                                    staff_point.create(
+                                        {"staff_point_name": name[0], "latitude": point_list[1],
+                                         "longitude": point_list[0],
+                                         "create_date": fields.Datetime.now(), "belong_staff": self.patrol_employee.id,
+                                         "belong_area": self.belong_area.id})
                         # 将标志位设置为 True
                         self.write({"is_parse": True})
                     finally:
                         file.close()
 
     @api.multi
-    def write(self, values):
-        """
-        重写 write 方法
-        :param values: 变更的字段，以字典的形式体现
-        """
-        super(PatrolSection, self).write(values)
-
-    @api.multi
     def unlink(self):
         """
         重写删除方法
         """
-        self._cr.execute(
-            """SELECT res_name, store_fname FROM ir_attachment WHERE res_model = 'inspection.patrol_section'""")
-        for row in self._cr.fetchall():
-            for record in self:
+        for record in self:
+            self._cr.execute(
+                """SELECT res_name, store_fname FROM ir_attachment WHERE res_model = 'inspection.patrol_section'""")
+            for row in self._cr.fetchall():
                 if record.area_name == row[0]:
                     db_name = threading.current_thread().dbname
                     path = "data/filestore/" + db_name + "/" + row[1]
@@ -110,8 +129,16 @@ class PatrolSection(models.Model):
                         os.remove(path)
                         patrol_points = self.env["inspection.patrol_point"].search(
                             [("belong_section.area_name", "=", row[0])])
+                        staff_id = 0
                         for patrol_point in patrol_points:
+                            staff_id = patrol_point.patrol_employee.id
                             patrol_point.unlink()
+                        if record.is_contain_staff_point:
+                            # 删除巡线员必经点
+                            staff_points = self.env["inspection.staff_point"].search(
+                                [("belong_staff.id", "=", staff_id)])
+                            for staff_point in staff_points:
+                                staff_point.unlink()
         return super(PatrolSection, self).unlink()
 
 
@@ -123,8 +150,8 @@ class PatrolPoint(models.Model):
     point_name = fields.Char(string=u"管线点名字", default=u"未命名地标", required=True)
     belong_area = fields.Many2one("hr.department", string=u"所属区域", compute="_compute_area", store=True)
     belong_section = fields.Many2one("inspection.patrol_section", string=u"所属区段", required=True)
-    latitude = fields.Float(string=u"纬度坐标", digits=(13, 10), required=True)
-    longitude = fields.Float(string=u"经度坐标", digits=(13, 10), required=True)
+    latitude = fields.Float(string=u"纬度坐标", digits=(16, 13), required=True)
+    longitude = fields.Float(string=u"经度坐标", digits=(16, 13), required=True)
     create_date = fields.Datetime(string=u"创建时间", default=fields.Datetime.now(), readonly=True)
 
     _sql_constraints = [
@@ -207,14 +234,6 @@ class StaffPointKML(models.Model):
                     self.write({"is_parse": True})
 
     @api.multi
-    def write(self, values):
-        """
-        重写 write 方法
-        :param values: 变更的字段，以字典的形式体现
-        """
-        return super(StaffPointKML, self).write(values)
-
-    @api.multi
     def unlink(self):
         """
         重写删除方法
@@ -229,8 +248,7 @@ class StaffPointKML(models.Model):
                     if os.path.exists(path):
                         os.remove(path)
                         staff_points = self.env["inspection.staff_point"].search(
-                            [("belong_staff.name_related", "=", row[0])])
-                        print staff_points
+                            [("staff_name.name_related", "=", row[0])])
                         for staff_point in staff_points:
                             staff_point.unlink()
         return super(StaffPointKML, self).unlink()
@@ -243,9 +261,9 @@ class PatrolStaffPoint(models.Model):
 
     staff_point_name = fields.Char(string=u"必经点名字", default=u"未命名地标", required=True)
     belong_area = fields.Many2one("hr.department", string=u"所属区域", compute="_compute_area", store=True)
-    belong_staff = fields.Many2one("hr.employee", string=u"巡线员")
-    latitude = fields.Float(string=u"纬度坐标", digits=(13, 10), required=True)
-    longitude = fields.Float(string=u"经度坐标", digits=(13, 10), required=True)
+    belong_staff = fields.Many2one("hr.employee", string=u"巡线员", required=True)
+    latitude = fields.Float(string=u"纬度坐标", digits=(16, 13), required=True)
+    longitude = fields.Float(string=u"经度坐标", digits=(16, 13), required=True)
     create_date = fields.Datetime(string=u"创建时间", default=fields.Datetime.now(), readonly=True)
     attendance_range = fields.Integer(string=u"考勤范围(米)", default=50, required=True)
 
@@ -254,6 +272,14 @@ class PatrolStaffPoint(models.Model):
          "CHECK(attendance_range >= 0)",
          u"考勤范围必须是大于等于 0 的正整数"),
     ]
+
+    @api.depends("belong_staff")
+    def _compute_area(self):
+        """
+        获取巡线员的部门
+        """
+        for record in self:
+            record.belong_area = record.belong_staff.department_id.id
 
 
 class AttendanceTime(models.Model):
@@ -264,10 +290,15 @@ class AttendanceTime(models.Model):
     start_time = fields.Float(string=u"开始时间", required=True)
     end_time = fields.Float(string=u"结束时间", required=True)
     remark = fields.Text(string=u"备注")
-    employee_id = fields.Many2many("hr.employee", "inspection_time_employee", "time_id", "employee_id", string=u"考勤人员",
-                                   domain=[("select_job", "=", "patrol_employee")])
+
+    @api.constrains("start_time", "end_time")
+    def _constraint_time(self):
+        for record in self:
+            if record.start_time == record.end_time:
+                raise ValueError(u"请重新设置开始时间或结束时间")
 
 
+"""
 class AttendanceEmployee(models.Model):
     _name = "inspection.attendance_employee"
     _description = u"考勤人员"
@@ -275,3 +306,4 @@ class AttendanceEmployee(models.Model):
 
     time_id = fields.Many2one("inspection.attendance_time", string=u"考勤名称")
     employee = fields.Many2one("hr.employee", string=u"员工", required=True)
+"""

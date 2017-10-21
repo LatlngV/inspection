@@ -35,7 +35,9 @@ class DangerManager(models.Model):
             "level": self.danger_level.id,
             "find_employee": self.find_staff.id,
             "upload_time": self.report_time,
-            "danger": self.id
+            "danger": self.id,
+            "latitude": self.latitude,
+            "longitude": self.longitude
         })
         return {
             "name": u"选择抢维修人员",
@@ -105,7 +107,6 @@ class ReportDanger(models.Model):
                 params = {"access_token": system_user.access_token, "target": system_user.username, "time": time_stamp,
                           "map_type": "GOOGLE"}
                 return_json = requests.get(url=url, params=params).json()
-                print return_json
                 if return_json["ret"] == 0 and return_json["msg"] == "OK":
                     gps_managers = self.env["inspection.gps_manager"].search([("staff.id", "=", employee_id)])
                     for gps_manager in gps_managers:
@@ -122,19 +123,24 @@ class ReportDanger(models.Model):
                                                       "account": system_user.username, "lat": latitude,
                                                       "time": time_stamp, "map_type": "GOOGLE"}
                                     address_json = requests.get(url=address_url, params=address_params).json()
-                                    print address_json
                                     if address_json["ret"] == 0 and address_json["msg"] == "":
                                         address = address_json["address"]
+                                        # 在隐患管理表中插入数据
+                                        self.env["inspection.danger_manager"].create({
+                                            "danger_type": values.get("danger_type"),
+                                            "danger_level": values.get("danger_level"),
+                                            "find_staff": employee_id,
+                                            "report_time": fields.Datetime.now(),
+                                            "detail": values.get("detail"),
+                                            "patrol_area": department_id,
+                                            "patrol_section": section_id,
+                                            "latitude": latitude,
+                                            "longitude": longitude,
+                                            "address": address})
                                     else:
                                         raise RuntimeError(address_json["msg"])
                 else:
                     raise RuntimeError(return_json["msg"])
-        # 在隐患管理表中插入数据
-        self.env["inspection.danger_manager"].create(
-            {"danger_type": values.get("danger_type"), "danger_level": values.get("danger_level"),
-             "find_staff": employee_id, "report_time": fields.Datetime.now(), "detail": values.get("detail"),
-             "patrol_area": department_id, "patrol_section": section_id, "latitude": latitude, "longitude": longitude,
-             "address": address})
         return super(ReportDanger, self).create(values)
 
 
@@ -152,6 +158,8 @@ class RepairManager(models.Model):
     repair_employee = fields.Many2one("hr.employee", string=u"抢维修人员", readonly=True)
     state = fields.Selection(SELECT_RESULT, string=u"结果", default="unassigned")
     upload_time = fields.Datetime(string=u"上报时间", readonly=True)
+    latitude = fields.Float(string=u"纬度坐标", digits=(9, 6), readonly=True)
+    longitude = fields.Float(string=u"经度坐标", digits=(9, 6), readonly=True)
 
     @api.multi
     def action_process(self):

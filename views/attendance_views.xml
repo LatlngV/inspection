@@ -25,30 +25,10 @@
                             <field name="end_time" widget="float_time"/>
                             <field name="remark"/>
                         </group>
-                        <notebook>
-                            <page string="员工">
-                                <field name="employee_id" widget="many2many_checkboxes" context="{'search_default_no_share':True}"/>
-                            </page>
-                        </notebook>
                     </sheet>
                 </form>
             </field>
         </record>
-
-        <!--<record id="attendance_employee_form" model="ir.ui.view">-->
-            <!--<field name="name">attendance_employee_form</field>-->
-            <!--<field name="model">inspection.attendance_employee</field>-->
-            <!--<field name="arch" type="xml">-->
-                <!--<form>-->
-                    <!--<sheet>-->
-                        <!--<group>-->
-                            <!--<field name="time_id" invisible="1"/>-->
-                            <!--<field name="employee" options="{'no_open':True}"/>-->
-                        <!--</group>-->
-                    <!--</sheet>-->
-                <!--</form>-->
-            <!--</field>-->
-        <!--</record>-->
 
         <record id="attendance_time_action" model="ir.actions.act_window">
             <field name="name">考勤时间</field>

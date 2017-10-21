@@ -6,9 +6,17 @@
             <field name="name">谷歌地图</field>
             <field name="tag">google_map</field>
         </record>
+        <record id="inspection.staff_task_detail" model="ir.actions.client">
+            <field name="name">巡检任务</field>
+            <field name="tag">staff_task_detail</field>
+        </record>
         <record id="inspection.patrol_track_action" model="ir.actions.client">
             <field name="name">巡检轨迹</field>
             <field name="tag">patrol_track</field>
+        </record>
+        <record id="inspection.staff_report_action" model="ir.actions.client">
+            <field name="name">巡检报表</field>
+            <field name="tag">staff_report</field>
         </record>
 
         <menuitem
@@ -17,6 +25,7 @@
                 web_icon="inspection,static/description/icon.png"
                 groups="group_inspection_manager,group_inspection_user"
                 sequence="0"/>
+
 
         <menuitem
                 id="menu_google_map"
@@ -27,11 +36,19 @@
 
 
         <menuitem
+                id="menu_staff_task"
+                name="巡检任务"
+                parent="menu_root"
+                action="inspection.staff_task_detail"
+                sequence="1"/>
+
+
+        <menuitem
                 id="menu_manual_patrol"
                 name="人工巡检"
                 parent="menu_root"
                 groups="group_inspection_manager,group_inspection_user"
-                sequence="1"/>
+                sequence="5"/>
         <menuitem
                 id="item_patrol_track"
                 name="巡检轨迹"
@@ -42,8 +59,9 @@
                 id="item_patrol_report"
                 name="巡检报表"
                 parent="menu_manual_patrol"
-                sequence="1"
-                groups="group_inspection_manager"/>
+                action="inspection.staff_report_action"
+                groups="group_inspection_manager"
+                sequence="1"/>
         <menuitem
                 id="item_attendance_time"
                 name="考勤时间"
@@ -58,7 +76,7 @@
                 name="隐患管理"
                 parent="menu_root"
                 groups="group_inspection_manager,group_inspection_user"
-                sequence="2"/>
+                sequence="10"/>
         <menuitem
                 id="menu_report_danger"
                 name="隐患上报"
@@ -96,61 +114,61 @@
                 id="menu_system_manager"
                 name="系统管理"
                 parent="menu_root"
-                groups="group_inspection_manager,group_inspection_user"
-                sequence="3"/>
+                groups="group_inspection_manager,group_inspection_sudo"
+                sequence="15"/>
         <menuitem
                 id="item_gps_manager"
                 name="GPS 管理"
                 parent="menu_system_manager"
                 action="gps_manager_action"
-                groups="group_inspection_manager,group_inspection_user"
+                groups="group_inspection_manager,group_inspection_sudo"
                 sequence="3"/>
         <menuitem
                 id="item_system_user"
                 name="汽车在线用户"
                 parent="menu_system_manager"
                 action="system_user_action"
-                groups="group_inspection_manager,group_super_user"
+                groups="group_inspection_sudo"
                 sequence="4"/>
         <menuitem
                 id="item_patrol_employee"
                 name="员工管理"
                 parent="menu_system_manager"
                 action="hr_employee_action"
-                groups="group_inspection_manager,group_inspection_user"/>
+                groups="group_inspection_manager,group_inspection_sudo"/>
         <menuitem
                 id="item_employee_department"
                 name="部门"
                 parent="menu_system_manager"
                 action="hr_department_action"
-                groups="group_inspection_manager,group_inspection_user"/>
+                groups="group_inspection_manager,group_inspection_sudo"/>
         <menuitem
                 id="item_employee_job"
                 name="角色管理"
                 parent="menu_system_manager"
                 action="hr_job_action"
-                groups="group_inspection_manager,group_inspection_user"/>
+                groups="group_inspection_manager,group_inspection_sudo"/>
 
 
         <menuitem
                 id="menu_super_user"
                 name="超级用户"
                 parent="menu_root"
-                sequence="4"
-                groups="group_super_user,group_inspection_manager"/>
+                sequence="20"
+                groups="group_inspection_sudo,group_inspection_manager"/>
         <menuitem
                 id="item_patrol_section"
                 name="巡线段"
                 parent="menu_super_user"
                 action="patrol_section_action"
-                groups="group_super_user,group_inspection_manager"
+                groups="group_inspection_sudo,group_inspection_manager"
                 sequence="0"/>
         <menuitem
                 id="item_patrol_point"
                 name="管道点"
                 parent="menu_super_user"
                 action="patrol_point_action"
-                groups="group_super_user,group_inspection_manager"
+                groups="group_inspection_sudo,group_inspection_manager"
                 sequence="1"/>
         <menuitem
                 id="item_staff_point_kml"
@@ -164,7 +182,7 @@
                 name="巡线员必经点"
                 parent="menu_super_user"
                 action="staff_point_action"
-                groups="group_super_user,group_inspection_manager"
+                groups="group_inspection_sudo,group_inspection_manager"
                 sequence="3"/>
 
 

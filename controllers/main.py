@@ -6,6 +6,8 @@ from odoo.exceptions import ValidationError
 import json
 import time
 from datetime import datetime
+import calendar
+from math import radians, cos, sin, asin, sqrt
 
 
 class GoogleMap(http.Controller):
@@ -27,12 +29,16 @@ class GoogleMap(http.Controller):
             "flag": flag,
             "staff_id": staff_id
         }
-        if flag == "loading_google_map":
+        if flag == "loading_google_map":  # 巡线员实时位置
             return request.render("inspection.loading_google_map", values)
-        elif flag == "patrol_track":
+        elif flag == "patrol_track":  # 巡线员巡检轨迹
             return request.render("inspection.dotop_patrol_track", values)
-        elif flag == "repair_map":
+        elif flag == "staff_report":  # 巡线员报表
+            return request.render("inspection.dotop_staff_report", values)
+        elif flag == "repair_map":  # 维修工人维修地图
             return request.render("inspection.repair_map", values)
+        elif flag == "staff_task_detail":  # 巡线员任务详情
+            return request.render("inspection.dotop_staff_task_detail", values)
 
 
 class MapOptions(http.Controller):
@@ -43,13 +49,13 @@ class MapOptions(http.Controller):
     @http.route("/staff_line", type="http", auth="public", website=True, csrf=False)
     def staff_line(self):
         """
-            返回所有巡线点
+        返回所有巡线点
         """
         sections = request.env["inspection.patrol_section"].search([])
         section_list = []
         for section in sections:
             """
-                添加巡线段
+            添加巡线段
             """
             section_dict = {"id": str(section.id),
                             "belong_area": str(section.belong_area.name),
@@ -75,12 +81,12 @@ class MapOptions(http.Controller):
     @http.route("/staff_position", type="http", auth="public", website=True, csrf=False)
     def staff_position(self):
         """
-            获取巡线员位置
+        获取巡线员位置
         """
         gps_managers = request.env["inspection.gps_manager"].search([])
         staff_position_list = []
         for gps_manager in gps_managers:
-            if gps_manager.staff and gps_manager.staff is not None:
+            if gps_manager.staff:
                 staff_position_dict = {"name": gps_manager.name, "latitude": gps_manager.latitude,
                                        "longitude": gps_manager.longitude, "speed": gps_manager.speed,
                                        "power": gps_manager.power, "deviceInfo": gps_manager.device_info,
@@ -91,8 +97,8 @@ class MapOptions(http.Controller):
     @http.route("/show_all_employees", type="http", auth="public", website=True, csrf=False)
     def show_all_employees(self):
         """
-            根据分班情况将人员添加进去
-            这里用的 treeview 这个组件，需要用特定的 json 格式
+        根据分班情况将人员添加进去
+        这里用的 treeview 这个组件，需要用特定的 json 格式
         """
         patrol_areas = request.env["hr.department"].search([("patrol_department", "=", True)])
         patrol_area_list = []
@@ -135,7 +141,7 @@ class MapOptions(http.Controller):
     @http.route("/show_track", type="http", auth="public", website=True, csrf=False)
     def show_track(self, **kwargs):
         """
-            巡检轨迹
+        巡检轨迹
         """
         staff_id = kwargs.get("staff_id", 1)
         begin_time = kwargs.get("begin_time", "")
@@ -161,7 +167,7 @@ class MapOptions(http.Controller):
     @http.route("/skip/patrol_track", type="http", auth="public", website=True, csrf=False)
     def skip_patrol_track(self):
         """
-            跳转到轨迹回放
+        跳转到轨迹回放
         """
         response = {"response": "Success"}
         return json.dumps(response)
@@ -169,7 +175,7 @@ class MapOptions(http.Controller):
     @http.route("/line_position", type="http", auth="public", website=True, csrf=False)
     def line_position(self, **kwargs):
         """
-            根据巡线员 id 获取其相应的管线数据
+        根据巡线员 id 获取其相应的管线数据
         """
         staff_id = kwargs.get("staff_id", 1)
         if staff_id:
@@ -222,18 +228,12 @@ class MapOptions(http.Controller):
             attendance_time_list.append(attendance_time_dict)
         return json.dumps(attendance_time_list)
 
-
-class Report(http.Controller):
-    """
-    报表
-    """
-
     @http.route("/staff_department", type="http", auth="public", website=True, csrf=False)
     def staff_department(self):
         """
         巡线员部门
         """
-        departments = request.env["hr.department"].search([])
+        departments = request.env["hr.department"].search([("patrol_department", "=", True)])
         department_list = []
         for department in departments:
             department_dict = {"departmentId": department.id, "departmentName": department.name}
@@ -241,19 +241,21 @@ class Report(http.Controller):
         return json.dumps(department_list)
 
     @http.route("/staff_report", type="http", auth="public", website=True, csrf=False)
-    def staff_route(self, **kwargs):
+    def staff_report(self, **kwargs):
         """
         巡线员报表
+        :return json 数据
         """
         department_id = kwargs.get("departmentId", 1)
         report_type = kwargs.get("reportType", 1)
-        date = kwargs.get("date", "")
+        date = kwargs.get("date", "2017-10-20")
+
         start_date_stamp = 0
         end_date_stamp = 0
-        if report_type == 1:  # 日报表
+        if report_type == "1":  # 日报表
             start_date_stamp = self.date2timeStamp(date)
             end_date_stamp = start_date_stamp + 24 * 60 * 60
-        elif report_type == 2:  # 月报表
+        elif report_type == "2":  # 月报表
             month = date.split("-")[1]
             year = date.split("-")[0]
 
@@ -264,49 +266,152 @@ class Report(http.Controller):
             else:
                 month = str(int(month) + 1)
                 if len(month) == 1:
-                    month = "0" + month
+                    month = "-0" + month
+                else:
+                    month = "-" + month
             start_date = date + "-01"
             end_date = year + month + "-01"
             start_date_stamp = self.date2timeStamp(start_date)
             end_date_stamp = self.date2timeStamp(end_date)
-        elif report_type == 3:  # 年报表
+        elif report_type == "3":  # 年报表
             start_date = date + "-01-01"
             end_date = str(int(date) + 1) + "-01-01"
             start_date_stamp = self.date2timeStamp(start_date)
             end_date_stamp = self.date2timeStamp(end_date)
-        staffs = request.env["hr.employee"].search([("department_id", "=", department_id)])
+        staffs = request.env["hr.employee"].search([("department_id.id", "=", department_id)])
         data_list = []
+
         for staff in staffs:
+            # 计算有效范围内的必经点
             request.env.cr.execute(
-                """SELECT default_range, one_hundred_range, two_hundred_range, five_hundred_range, thousand_range FROM staff_task_detail WHERE staff_id=%s AND create_time>=%s AND create_time<%s""" % (
-                    staff.id, str(start_date_stamp), str(end_date_stamp)))
+                """SELECT default_range, one_hundred_range, two_hundred_range, five_hundred_range, thousand_range, id FROM staff_task_detail WHERE staff_id=%s AND create_time>=%s AND create_time < %s""" % (
+                    staff.id, start_date_stamp, end_date_stamp))
             default_count = 0
             one_hundred_count = 0
             two_hundred_count = 0
             five_hundred_count = 0
             thousand_count = 0
-            for year_report in request.env.cr.fetchall():
-                if year_report[0]:
+
+            for report in request.env.cr.fetchall():
+                if report[0]:
                     default_count += 1
-                if year_report[1]:
+                if report[1]:
                     one_hundred_count += 1
-                if year_report[2]:
+                if report[2]:
                     two_hundred_count += 1
-                if year_report[3]:
+                if report[3]:
                     five_hundred_count += 1
-                if year_report[4]:
+                if report[4]:
                     thousand_count += 1
+
             # 计算必经点总数
-            request.env.cr.execute(
-                """SELECT point_count FROM staff_task_detail WHERE staff_id=%s AND create_time>=%s AND create_time<=%s""" % (
-                    staff.id, str(start_date_stamp), str(end_date_stamp)))
+            query = """SELECT point_count FROM staff_task WHERE staff_id=%s AND create_time>=%s AND create_time<=%s"""
+            request.env.cr.execute(query, (staff.id, start_date_stamp, end_date_stamp))
             total_point_count = 0
             for row in request.env.cr.fetchall():
                 total_point_count += row[0]
+
+            # 获取管线长度
+            pipeline_length = 0
+            patrol_sections = request.env["inspection.patrol_section"].search([("patrol_employee.id", "=", staff.id)])
+            for patrol_section in patrol_sections:
+                pipeline_length = patrol_section.pipeline_length
+
+            # 巡线员必经点数量
+            staff_points = request.env["inspection.staff_point"].search([("belong_staff.id", "=", staff.id)])
+
+            # 计算里程
+            days = 0
+            total_kilo = 0
+            current_date = None
+            if report_type == "1":
+                days = 1
+                current_date = str(date)
+            elif report_type == "2":
+                date_list = date.split("-")
+                date_tuple = calendar.monthrange(int(date_list[0]), int(date_list[1]))
+                days = date_tuple[1]
+                current_date = str(date) + "-01"
+            elif report_type == "3":
+                if int(date) % 4 == 0:
+                    days = 366
+                else:
+                    days = 365
+                current_date = str(date) + "-01-01"
+            for i in range(0, days):
+                attendance_times = request.env["inspection.attendance_time"].search([])
+                for attendance_time in attendance_times:
+                    begin_time_stamp = self._time_stamp(current_date, attendance_time.start_time)
+                    stop_time_stamp = self._time_stamp(current_date, attendance_time.end_time)
+                    date_array = current_date.split("-")
+                    table_name = "dotop_" + date_array[0] + date_array[1]
+                    history_query = """SELECT latitude, longitude FROM %s WHERE staff_id=%s AND gps_time>=%s AND gps_time<=%s""" % (
+                        table_name, staff.id, begin_time_stamp, stop_time_stamp)
+                    request.env.cr.execute(history_query)
+
+                    index = 0  # 开始的标志位，如果是 0 就给临时变量赋值
+                    temp_latitude = 0  # 纬度坐标的临时变量
+                    temp_longitude = 0  # 经度坐标的临时变量
+                    for record in request.env.cr.fetchall():
+                        if index == 0:
+                            temp_latitude = record[0]
+                            temp_longitude = record[1]
+                            index = 1
+                        else:
+                            distance = self._haversine(temp_longitude, temp_latitude, record[1], record[0])
+                            total_kilo += distance
+
+                            # 重新给经纬度坐标的临时变量赋值
+                            temp_latitude = record[0]
+                            temp_longitude = record[1]
+
+                time_array = time.strptime(str(current_date), "%Y-%m-%d")
+                time_stamp = int(time.mktime(time_array)) + 24 * 60 * 60
+                time_arrays = time.localtime(time_stamp)
+                current_date = time.strftime("%Y-%m-%d", time_arrays)
+
+            # 将数据添加到字典中，将字典添加到列表中
             data_list.append({"totalPoint": total_point_count, "defaultCount": default_count,
                               "oneHundredCount": one_hundred_count, "twoHundredCount": two_hundred_count,
-                              "fiveHundredCount": five_hundred_count, "thousandCount": thousand_count})
+                              "fiveHundredCount": five_hundred_count, "thousandCount": thousand_count,
+                              "staffName": staff.name_related, "pipelineLength": pipeline_length,
+                              "deparment": staff.department_id.name, "pointCount": len(staff_points),
+                              "staffId": staff.id, "totalKilo": round(total_kilo, 2)})
         return json.dumps(data_list)
+
+    def _haversine(self, longitude1, latitude1, longitude2, latitude2):
+        """
+        在球上计算两点之间的距离(haversine 公式)
+        """
+        # 将十进制度数转化为弧度
+        list = map(radians, [longitude1, latitude1, longitude2, latitude2])
+
+        # haversine 公式
+        distance_longitude = list[2] - list[0]
+        distance_latitude = list[3] - list[1]
+        a = sin(distance_latitude / 2) ** 2 + cos(list[1]) * cos(list[3]) * sin(distance_longitude / 2) ** 2
+        c = 2 * asin(sqrt(a))
+        # 地球平均半径，单位为公里
+        r = 6371
+        return c * r
+
+    def _time_stamp(self, date, float_time):
+        """
+        拼接时间转换成时间戳
+        :param date: 日期（年月日，不包含时分秒）
+        :param float_time: 将 float 类型的数字转换为时间
+        :return: 时间戳
+        """
+        time_list = str(float_time).split(".")
+        minutes = time_list[1]
+        if minutes != 0:
+            if len(minutes) == 1:
+                minutes = minutes + "0"
+            minutes = str(int(float(minutes) * 3 / 5))
+        date = date + " " + time_list[0] + ":" + minutes + ":00"
+        time_array = time.strptime(date, "%Y-%m-%d %H:%M:%S")
+        time_stamp = int(time.mktime(time_array))
+        return time_stamp
 
     def date2timeStamp(self, date):
         """
@@ -314,12 +419,17 @@ class Report(http.Controller):
         :param date: 日期
         :return: 时间戳
         """
+        date = date + " 00:00:00"
         time_array = time.strptime(date, "%Y-%m-%d %H:%M:%S")
         time_stamp = int(time.mktime(time_array))
         return time_stamp
 
     @http.route("/staff_point", type="http", auth="public", website=True, csrf=False)
     def staff_point(self):
+        """
+        巡线员的必经点
+        :return: json 数据
+        """
         staff_points = request.env["inspection.staff_point"].search([])
         point_list = []
         for staff_point in staff_points:
@@ -330,9 +440,12 @@ class Report(http.Controller):
 
     @http.route("/repair_map", type="http", auth="public", website=True, csrf=False)
     def repair_map(self):
-        user_id = request.session.db
-        print user_id
-        repair_staffs = request.env["hr.employee"].search([("recourse_id.id", "=", user_id)])
+        """
+        维修地图
+        :return json 数据
+        """
+        user_id = request.uid
+        repair_staffs = request.env["hr.employee"].search([("resource_id.user_id.id", "=", user_id)])
         for repair_staff in repair_staffs:
             repair_staff_id = repair_staff.id
             repair_managers = request.env["inspection.repair_manager"].search(
@@ -342,33 +455,156 @@ class Report(http.Controller):
                 latitude = repair_manager.latitude
                 longitude = repair_manager.longitude
                 staff = repair_manager.find_employee.name_related
-                danger_point_dict = {"latitude": latitude, "longitude": longitude, "staffName": staff}
+                request.env.cr.execute(
+                    """SELECT res_id FROM ir_attachment WHERE res_model='inspection.danger_category'""")
+                for row in request.env.cr.fetchall():
+                    if row[0] is not None:
+                        danger_point_dict = {"latitude": latitude, "longitude": longitude, "staffName": staff,
+                                             "icon": row[0]}
                 danger_point_list.append(danger_point_dict)
             return json.dumps(danger_point_list)
 
+    @http.route("/task_detail", type="http", auth="public", website=True, csrf=False)
+    def task_detail(self, **kwargs):
+        """
+        根据员工 id 选择巡线员的数据
+        :return json 数据
+        [
+            {"pointName": 值, "latlng": 值, "morning": 值, "afternoon": 值},
+            {"pointName": 值, "latlng": 值, "morning": 值, "afternoon": 值},
+        ]
+        """
+        staff_id = kwargs.get("staffId", 0)
+        date = kwargs.get("date", "2017-10-18")
+        range_flag = kwargs.get("rangeFlag", 0)
 
-"""
-color_list = ["#FF0000", "#00FF00", "#0000FF", "#00FFFF", "#FF00FF", "#FFFF00"]
-for patrol_area in patrol_areas:
-    patrol_area_dict = {}
-    patrol_area_dict["text"] = str(patrol_area.name)
-    patrol_area_dict["selectable"] = False
-    patrol_area_dict["nodes"] = []
+        staff_points = request.env["inspection.staff_point"].search([("belong_staff.id", "=", staff_id)])
+        data_list = []
+        for staff_point in staff_points:
+            latlng = str(staff_point.latitude) + "," + str(staff_point.longitude)
+            data_dict = {"pointName": staff_point.staff_point_name, "latlng": latlng}
 
-    times = request.env["inspection.attendance_time"].search([])
-    index = 0
-    for time in times:
-        patrol_area_dict["nodes"].append(
-            {"text": str(time.name), "time_id": str(time.id), "selectable": False, "color": color_list[index],
-             "nodes": []})
-        for employee in time.employee_id:
-            if employee.department_id.id == patrol_area.id:
-                patrol_area_dict["nodes"][index]["nodes"].append({
-                    "text": employee.name_related,
-                    "staff_id": employee.id,
-                    "icon": "glyphicon glyphicon-user",
-                    "class_id": time.id
-                })
-        index += 1
-    patrol_area_list.append(patrol_area_dict)
-"""
+            start_date = str(date) + " 00:00:00"
+            time_array = time.strptime(start_date, "%Y-%m-%d %H:%M:%S")
+            end_time_stamp = int(time.mktime(time_array)) + 24 * 60 * 60
+            start_time_stamp = int(time.mktime(time_array))
+            task_query = """SELECT id FROM staff_task WHERE staff_id=%s AND create_time>=%s AND create_time<=%s"""
+            request.env.cr.execute(task_query, (staff_id, start_time_stamp, end_time_stamp))
+            for record in request.env.cr.fetchall():
+                if range_flag == 1:
+                    task_detail_query = """SELECT default_range FROM staff_task_detail WHERE task_id=%s"""
+                    request.env.cr.execute(task_detail_query, record[0])
+                if range_flag == 2:
+                    task_detail_query = """SELECT one_hundred_range FROM staff_task_detail WHERE task_id=%s"""
+                    request.env.cr.execute(task_detail_query, record[0])
+                if range_flag == 3:
+                    task_detail_query = """SELECT two_hundred_range FROM staff_task_detail WHERE task_id=%s"""
+                    request.env.cr.execute(task_detail_query, record[0])
+                if range_flag == 4:
+                    task_detail_query = """SELECT five_hundred_range FROM staff_task_detail WHERE task_id=%s"""
+                    request.env.cr.execute(task_detail_query, record[0])
+                if range_flag == 5:
+                    task_detail_query = """SELECT thousand_range FROM staff_task_detail WHERE task_id=%s"""
+                    request.env.cr.execute(task_detail_query, record[0])
+                for row in request.env.cr.fetchall():
+                    if row[0]:
+                        data_dict["morning"] = "0"
+                    else:
+                        data_dict["afternoon"] = "1"
+            data_list.append(data_dict)
+        return json.dumps(data_list)
+
+    @http.route("/save_staff_point", type="http", auth="public", website=True, csrf=False)
+    def save_staff_point(self, **kwargs):
+        """
+        保存必经点
+        """
+        staff_id = kwargs.get("staffId", 0)
+        point_name = kwargs.get("pointName", "")
+        latitude = kwargs.get("latitude", 0)
+        longitude = kwargs.get("longitude", 0)
+        attendance_range = kwargs.get("attendanceRange", 0)
+
+        if staff_id != 0 and point_name != "" and attendance_range > 0:
+            staff_point = request.env["inspection.staff_point"]
+            staff_point.create({"latitude": latitude, "longitude": longitude, "belong_staff": staff_id,
+                                "staff_point_name": point_name, "attendance_range": attendance_range,
+                                "create_date": datetime.now()})
+            return json.dumps({"response": "success"})
+        else:
+            return json.dumps({"response": u"请填写正确的必经点信息"})
+
+    @http.route("/staff_id", type="http", auth="public", website=True, csrf=False)
+    def staff_id(self):
+        """
+        获取当前用户在 hr_employee 表中的 id
+        :return: 员工表中的 id
+        """
+        user_id = request._uid
+        staffs = request.env["hr.employee"].search([("resource_id.user_id.id", "=", user_id)])
+        for staff in staffs:
+            return json.dumps({"staffId": staff.id})
+
+    @http.route("/staff_pipeline", type="http", auth="public", website=True, csrf=False)
+    def staff_pipeline(self, **kwargs):
+        """
+        根据巡线员获取对应管线数据
+        :param kwargs: post 过来的参数
+        :return: 管线数据的 json
+        """
+        staff_id = kwargs.get("staffId", 0)
+        if staff_id != 0:
+            patrol_sections = request.env["inspection.patrol_section"].search([("patrol_employee.id", "=", staff_id)])
+            point_list = []
+            for patrol_section in patrol_sections:
+                points = request.env["inspection.patrol_point"].search([("belong_section.id", "=", patrol_section.id)])
+                for point in points:
+                    point_dict = {"latitude": point.latitude, "longitude": point.longitude}
+                    point_list.append(point_dict)
+            return json.dumps(point_list)
+
+    @http.route("/staff_task_point", type="http", auth="public", website=True, csrf=False)
+    def staff_task_point(self, **kwargs):
+        """
+        巡线员的必经点
+        :param kwargs: post 过来的参数
+        :return: 巡线员的任务点
+        """
+        staff_id = kwargs.get("staffId", 0)
+        if staff_id != 0:
+            staff_points = request.env["inspection.staff_point"].search([("belong_staff.id", "=", staff_id)])
+            point_list = []
+            for staff_point in staff_points:
+                point_dict = {"latitude": staff_point.latitude, "longitude": staff_point.longitude}
+                point_list.append(point_dict)
+            return json.dumps(point_list)
+
+    @http.route("/task_point_complete", type="http", auth="public", website=True, csrf=False)
+    def task_point_complete(self, **kwargs):
+        """
+        任务点完成情况
+        :return: 完成情况的 json
+        """
+        staff_id = kwargs.get("staffId", 0)
+
+        time_stamp = int(time.time())
+        current_date = time.strftime("%Y-%m-%d", time.localtime(time.time()))
+        attendance_times = self.env["inspection.attendance_time"].search([])
+        task_detail_list = []
+        for attendance_time in attendance_times:
+            start_time_stamp = self._time_stamp(current_date, attendance_time.start_time)
+            end_time_stamp = self._time_stamp(current_date, attendance_time.end_time)
+            if time_stamp in range(start_time_stamp, end_time_stamp):
+                staff_points = self.env["inspection.staff_point"].search([("belong_staff.id", "=", staff_id)])
+
+                for staff_point in staff_points:
+                    query = """SELECT latitude, longitude FROM dotop_staff_position WHERE id=%s AND gps_time>=%s AND gps_time<=%s"""
+                    self.env.cr.execute(query, (staff_id, start_time_stamp, end_time_stamp))
+                    for row in request.env.cr.fetchall():
+                        distance = self._haversine(row[1], row[0], staff_point.longitude, staff_point.latitude)
+                        if distance <= 50:
+                            task_detail_dict = {"complete": True}
+                        else:
+                            task_detail_dict = {"complete": False}
+                        task_detail_list.append(task_detail_dict)
+        return json.dumps(task_detail_list)

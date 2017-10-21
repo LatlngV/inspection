@@ -6,6 +6,8 @@
             <xpath expr="." position="inside">
                 <script type="text/javascript" src="/inspection/static/src/js/google_map_widget.js"></script>
                 <script type="text/javascript" src="/inspection/static/src/js/patrol_track_widget.js"></script>
+                <script type="text/javascript" src="/inspection/static/src/js/staff_report_widget.js"></script>
+                <script type="text/javascript" src="/inspection/static/src/js/staff_task_detail_widget.js"></script>
             </xpath>
         </template>
 

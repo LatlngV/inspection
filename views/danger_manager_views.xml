@@ -143,6 +143,8 @@
                                 <field name="repair_employee" options="{'no_open':True}"/>
                                 <field name="upload_time"/>
                                 <field name="danger" invisible="1"/>
+                                <field name="latitude"/>
+                                <field name="longitude"/>
                             </group>
                         </group>
                     </sheet>
@@ -187,11 +189,12 @@
                     <templates>
                         <t t-name="kanban-box">
                             <div class="oe_kanban_global_click">
-                                <div class="o_kanban_image" style="height: 50px; overflow: hidden; text-align: center">
+                                <div class="o_kanban_image"
+                                     style="width: 75px; height: 75px; overflow: hidden; border: green solid 1px;">
                                     <img t-att-src="kanban_image('inspection.danger_category', 'image', record.id.value)"/>
                                 </div>
-                                <div t-attf-class="oe_kanban_details">
-                                    隐患级别名称:
+                                <div t-attf-class="oe_kanban_details" style="margin-left: 15px;">
+                                    隐患级别:
                                     <strong>
                                         <field name="name"/>
                                     </strong>
@@ -214,7 +217,7 @@
                         <group>
                             <field name="name"/>
                             <label for="image"/>
-                            <div style="width: 100px; height: 100px; overflow:hidden;">
+                            <div style="width: 75px; height: 75px; overflow:hidden; border: green solid 1px; text-align: center;">
                                 <field name="image" widget="image" class="oe_image"/>
                             </div>
                             <field name="remark"/>

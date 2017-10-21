@@ -58,6 +58,7 @@
                         </div>
                     </div>
                 </div>
+
                 <script src="http://ditu.google.cn/maps/api/js?key=AIzaSyBfUr4jDPyIJu2j70qRI9oJnMdxOhxWPZw&amp;language=cn&amp;libraries=drawing,geometry&amp;v=3.26"></script>
                 <script type="text/javascript" src="/inspection/static/src/js/jquery-1.7.2.min.js"></script>
                 <script type="text/javascript" src="/inspection/static/src/js/bootstrap-treeview.min.js"></script>

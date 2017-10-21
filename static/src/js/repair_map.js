@@ -41,7 +41,7 @@ function getDangerAddress() {
                         position: {lat: latitude, lng: longitude},
                         map: map,
                         title: staffName,
-                        icon: "/inspection/static/src/img/blue_01.png"
+                        icon: "/web/image?model=inspection.danger_category&id=" + data.icon + "&field=image"
                     });
                     marker_array.push(marker);
                 }
