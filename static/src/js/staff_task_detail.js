@@ -2,13 +2,17 @@
 var map = null;
 /* 巡线员 id */
 var staffId = 0;
+/* json 数据 */
+var jsonData = null;
+/* 覆盖物 */
+var pointMarker = [];
 
 /**
  * 初始化谷歌地图
  */
 function initGoogleMap() {
     map = new google.maps.Map(document.getElementById("staff_task_detail_map"), {
-        zoom: 13,
+        zoom: 12,
         center: {lat: 36.9222760000, lng: 119.1296490000},
         mapTypeId: google.maps.MapTypeId.HYBRID
     });
@@ -31,6 +35,8 @@ function getStaffId() {
                 staffId = json.staffId;
                 /* 根据坐标画管道 */
                 drawPipeline();
+                 /* 画必经点 */
+                drawStaffTakPoint();
             }
         }
     });
@@ -63,9 +69,6 @@ function drawPipeline() {
                     strokeOpacity: 1
                 });
                 tmpPolyline.setMap(map);
-
-                // 画必经点
-                drawStaffTakPoint();
             }
         }
     });
@@ -83,19 +86,8 @@ function drawStaffTakPoint() {
 
         success: function (json) {
             if (json !== null && json.length > 0) {
-                var pointMarker = [];
-                for (var i = 0; i < json.length; i++) {
-                    var data = json[i];
-                    var latitude = data.latitude;
-                    var longitude = data.longitude;
-                    // 画 Marker
-                    var staffMarker = new google.maps.Marker({
-                        position: new google.maps.LatLng(latitude, longitude),
-                        map: map,
-                        icon: "/inspection/static/src/img/route_red.png"
-                    });
-                    pointMarker.push(staffMarker);
-                }
+                jsonData = json;
+
                 // 必经点完成情况
                 taskDetail();
             }
@@ -108,7 +100,7 @@ function drawStaffTakPoint() {
  */
 function taskDetail() {
     $.ajax({
-        url: "task_point_complete",
+        url: "/task_point_complete",
         data: {staffId: staffId},
         type: "post",
         dataType: "json",
@@ -116,32 +108,47 @@ function taskDetail() {
         success: function (json) {
             if (json !== null && json.length > 0) {
                 var container = document.getElementById("staff_task_point");
-                var nodeList = container.childNodes;
-                for (var j = nodeList.length; j >= 0; j++) {
-                    container.removeChild(nodeList[j]);
+                container.innerHTML = "";
+                if (pointMarker !== null && pointMarker.length > 0) {
+                    for (j = 0; j < pointMarker.length; j++) {
+                        pointMarker[j].setMap(null);
+                    }
+                    pointMarker.splice(0, pointMarker.length);
                 }
                 for (var i = 0; i < json.length; i++) {
+
+                    var latlng = jsonData[i];
+                    var latitude = latlng.latitude;
+                    var longitude = latlng.longitude;
+                    var icon = "/inspection/static/src/img/route_red.png";
+
                     var data = json[i];
                     var div = document.createElement("div");
                     if (data.complete) {
-                        div.className = "green-circle";
+                        div.className = "green-circle text-style";
+                        icon = "/inspection/static/src/img/route_green.png";
                     } else {
-                        div.className = "red-circle";
+                        div.className = "red-circle text-style";
+                        icon = "/inspection/static/src/img/route_red.png";
                     }
-                    div.style.marginTop = "10px";
+                    div.innerHTML = (i + 1);
 
-                    var span = document.createElement("span");
-                    span.style.height = "20px";
-                    span.style.lineHeight = "20px";
-                    span.style.display = "block";
-                    span.style.color = "#000000";
-                    span.style.textAlign = "center";
-                    span.innerHTML = (i + 1);
-
-                    div.appendChild(span);
                     container.appendChild(div);
+                    // 画 Marker
+                    var staffMarker = new google.maps.Marker({
+                        position: new google.maps.LatLng(latitude, longitude),
+                        title: latlng.pointName,
+                        map: map,
+                        icon: icon
+                    });
+
+                    pointMarker.push(staffMarker);
+                    if (i === Math.round(json.length / 2)) {
+                        map.setCenter(staffMarker.getPosition());
+                    }
                 }
             }
+            window.setTimeout("taskDetail()", 20 * 1000);
         }
     });
 }

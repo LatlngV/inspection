@@ -6,7 +6,7 @@
         <html>
             <head>
                 <meta charset="utf-8"/>
-                <meta name="viewport" content="initial-scale=1.0, user-scalable=no"/>
+                <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no"/>
                 <title>巡检任务</title>
 
                 <style>
@@ -26,6 +26,14 @@
                     -moz-border-radius: 50%;
                     -webkit-border-radius: 50%;
                     }
+                    .text-style {
+                    float: left;
+                    text-align: center;
+                    color: black;
+                    margin-top: 2px;
+                    margin-bottom: 2px;
+                    margin-left: 10px;
+                    }
                 </style>
 
                 <link rel="stylesheet" type="text/css" href="/inspection/static/src/css/loading_google_map.css"/>
@@ -38,9 +46,8 @@
 
             </head>
             <body>
-                <div id="staff_task_point" style="height: 20px; width: 100%;"> </div>
+                <div id="staff_task_point" style="height: 20px; width: 100%;"></div>
                 <div id="staff_task_detail_map">
-
                 </div>
             </body>
             <script type="text/javascript" src="/inspection/static/src/js/staff_task_detail.js"></script>

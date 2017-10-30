@@ -22,6 +22,7 @@
         "views/staff_report_template.xml",
         "views/repair_map_template.xml",
         "views/staff_task_detail_template.xml",
+        "views/attendance_time_template.xml",
         "views/gps_manager_views.xml",
         "data/timing_task_views.xml",
         "views/menu_item.xml",

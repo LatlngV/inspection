@@ -157,7 +157,6 @@
             dataType: "json",
 
             success: function (json) {
-                console.log(json);
                 if (json !== null && json.length > 0) {
                     var staffArray = [];
                     var departmentArray = [];
@@ -199,21 +198,21 @@
                             thousandPerc = 0;
                         }
                         staffArray.push(staffName);
-                        departmentArray.push(data.deparment);
+                        departmentArray.push(data.department);
                         pipelineArray.push(data.pipelineLength);
                         totalKiloArray.push(data.totalKilo);
                         staffPointArray.push(data.pointCount);
                         totalPointArray.push(totalPoint);
                         defaultArray.push(defaultCount);
-                        defaultPercArray.push(defaultPerc.toFixed(2) + "%");
+                        defaultPercArray.push((defaultPerc * 100).toFixed(2));
                         oneHundredArray.push(oneHundredCount);
-                        onePercArray.push(onePerc.toFixed(2) + "%");
+                        onePercArray.push((onePerc * 100).toFixed(2));
                         twoHundredArray.push(twoHundredCount);
-                        twoPercArray.push(twoPerc.toFixed(2) + "%");
+                        twoPercArray.push((twoPerc * 100).toFixed(2));
                         fiveHundredArray.push(fiveHundredCount);
-                        fivePercArray.push(fivePerc.toFixed(2) + "%");
+                        fivePercArray.push((fivePerc * 100).toFixed(2));
                         thousandArray.push(thousandCount);
-                        thousandPercArray.push(thousandPerc.toFixed(2) + "%");
+                        thousandPercArray.push((thousandPerc * 100).toFixed(2));
                         staffIdArray.push(staffId);
                     }
                     var listView = document.getElementById("report_list");
@@ -280,70 +279,111 @@
                         a.onclick = function () {
                             aClick(this.href, 1);
                         };
+                        a.innerHTML = defaultArray[i];
                         td.appendChild(a);
                     } else {
                         td.innerHTML = defaultArray[i];
                     }
                 }
                 if (j === 7) {
-                    td.innerHTML = defaultPercArray[i];
+                    addProgressbar(td, defaultPercArray[i]);
                 }
                 if (j === 8) {
                     if (reportType === 1) {
                         a.onclick = function () {
                             aClick(this.href, 2);
                         };
+                        a.innerHTML = oneHundredArray[i];
                         td.appendChild(a);
                     } else {
-                        td.innerHTML = defaultArray[i];
+                        td.innerHTML = oneHundredArray[i];
                     }
                 }
                 if (j === 9) {
-                    td.innerHTML = onePercArray[i];
+                    addProgressbar(td, onePercArray[i]);
                 }
                 if (j === 10) {
                     if (reportType === 1) {
                         a.onclick = function () {
                             aClick(this.href, 3);
                         };
+                        a.innerHTML = twoHundredArray[i];
                         td.appendChild(a);
                     } else {
-                        td.innerHTML = defaultArray[i];
+                        td.innerHTML = twoHundredArray[i];
                     }
                 }
                 if (j === 11) {
-                    td.innerHTML = twoPercArray[i];
+                    addProgressbar(td, twoHundredArray[i]);
                 }
                 if (j === 12) {
                     if (reportType === 1) {
                         a.onclick = function () {
                             aClick(this.href, 4);
                         };
+                        a.innerHTML = fiveHundredArray[i];
                         td.appendChild(a);
                     } else {
-                        td.innerHTML = defaultArray[i];
+                        td.innerHTML = fiveHundredArray[i];
                     }
                 }
                 if (j === 13) {
-                    td.innerHTML = fivePercArray[i];
+                    addProgressbar(td, fivePercArray[i]);
                 }
                 if (j === 14) {
                     if (reportType === 1) {
                         a.onclick = function () {
                             aClick(this.href, 5);
                         };
+                        a.innerHTML = thousandArray[i];
                         td.appendChild(a);
                     } else {
-                        td.innerHTML = defaultArray[i];
+                        td.innerHTML = thousandArray[i];
                     }
                 }
                 if (j === 15) {
-                    td.innerHTML = thousandPercArray[i];
+                    addProgressbar(td, thousandPercArray[i]);
                 }
                 tr.appendChild(td);
             }
             tbody.appendChild(tr);
         }
+    }
+
+    /**
+     * 添加 ProgressBar
+     * @param td
+     * @param data
+     */
+    function addProgressbar(td, data) {
+        var div = document.createElement("div");
+        div.className = "progress";
+        div.style.marginTop = "5px";
+        div.style.marginBottom = "5px";
+
+        var progress = document.createElement("div");
+        progress.role = "progressbar";
+        progress.ariaValuenow = data;
+        progress.ariaValuemin = 0;
+        progress.ariaValuemax = 100;
+        progress.style.width = data + "%";
+
+        var span = document.createElement("span");
+        span.innerHTML = data + "%";
+        if (data > 80) {
+            progress.className = "progress-bar progress-bar-success";
+            span.style.color = "#00FF00";
+        } else if (data > 60 && data <= 80) {
+            progress.className = "progress-bar progress-bar-warning";
+            span.style.color = "#FFFF00";
+        } else if (data <= 60) {
+            progress.className = "progress-bar progress-bar-danger";
+            span.style.color = "#FF0000";
+        }
+
+        progress.appendChild(span);
+        div.appendChild(progress);
+        td.appendChild(div);
     }
 
     /**
@@ -412,8 +452,10 @@
                             var span = document.createElement("span");
                             if (data.morning === "0") {
                                 span.style.color = "#00FF00";
+                                span.innerHTML = "完成";
                             } else if (data.morning === "1") {
                                 span.style.color = "#FF0000";
+                                span.innerHTML = "未完成";
                             }
                             if (j === 0) {
                                 td.innerHTML = data.pointName;
@@ -422,11 +464,9 @@
                                 td.innerHTML = data.latlng;
                             }
                             if (j === 2) {
-                                span.innerHTML = data.morning;
                                 td.appendChild(span)
                             }
                             if (j === 3) {
-                                span.innerHTML = data.afternoon;
                                 td.appendChild(span)
                             }
                             tr.appendChild(td);

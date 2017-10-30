@@ -84,6 +84,8 @@ class SystemUser(models.Model):
                             """CREATE TABLE staff_task (id bigserial PRIMARY KEY, staff_id INT, point_count INT, create_time BIGINT)""")
                         self._cr.execute(
                             """CREATE TABLE staff_task_detail(id bigserial PRIMARY KEY, task_id BIGINT, staff_id INT, default_range boolean, one_hundred_range boolean, two_hundred_range boolean, five_hundred_range boolean, thousand_range boolean, point_id INT, create_time BIGINT)""")
+                        self._cr.execute(
+                            """CREATE TABLE dotop_attendance_time (id serial PRIMARY KEY, attendance_name VARCHAR, start_time VARCHAR, end_time VARCHAR, remark VARCHAR)""")
                     self.write({"access_token": return_json["access_token"], "is_bind": True, "begin_time": time_stamp})
                 else:
                     raise ValidationError(return_json["msg"])
@@ -159,7 +161,7 @@ class SystemUser(models.Model):
             2. 请求 json 数据
             3. 根据 IMEI 写入数据
         """
-        current_time = int(time.time())
+        current_time = int(time.time()) - 60
         data_position = 0
         system_users = self.env["inspection.system_user"].search([])
         for system_user in system_users:
@@ -178,7 +180,7 @@ class SystemUser(models.Model):
                                   "map_type": "GOOGLE", "begin_time": system_user.begin_time, "end_time": current_time,
                                   "time": current_time}
                         return_json = requests.get(url=url, params=params).json()
-                        print return_json
+
                         if return_json["ret"] == 0 and return_json["msg"] == "OK":
                             if len(return_json["data"]) > 0:
                                 for data in return_json["data"]:
@@ -207,23 +209,7 @@ class SystemUser(models.Model):
         # 表不存在就创建表
         self._cr.execute(
             """CREATE TABLE if not exists %s (id bigserial PRIMARY KEY, staff_id INT, latitude FLOAT, longitude FLOAT, imei VARCHAR, speed FLOAT, gps_time BIGINT)""" % table_name)
-        # 查询用户自定义的数据库表
-        # self._cr.execute("""SELECT tablename FROM pg_tables WHERE schemaname='public' AND tablename LIKE 'dotop%'""")
 
-        # 记录含有当前表的标志位
-        # have_index = 0
-        # 记录没有当前表的标志位
-        # no_index = 0
-        # for r in self._cr.fetchall():
-        #     if table_name != r[0]:
-        #         have_index += 1
-        #     no_index += 1
-
-        # 如果表不存在就创建表
-        # if have_index == no_index:
-        #     self._cr.execute(
-        #         """CREATE TABLE %s(id bigserial PRIMARY KEY, staff_id INT, latitude FLOAT, longitude FLOAT, imei VARCHAR, speed FLOAT, gps_time BIGINT)""" % table_name)
-        #     self._cr.execute("""DELETE FROM DOTOP_STAFF_POSITION WHERE id<%s""" % data_position)
         # 插入数据
         self._cr.execute("""SELECT * FROM DOTOP_STAFF_POSITION WHERE id>=%s""" % data_position)
         for row in self._cr.fetchall():
@@ -270,7 +256,7 @@ class SystemUser(models.Model):
                 date = time.strftime("%Y-%m-%d", time.localtime(time.time())) + " " + start_time_list[
                     0] + ":" + minutes + ":00"
                 time_array = time.strptime(date, "%Y-%m-%d %H:%M:%S")
-                date_time_stamp = int(time.mktime(time_array)) - 8 * 60 * 60
+                date_time_stamp = int(time.mktime(time_array)) - 8 * 60 * 60  # TODO 快了 8 小时
                 self._cr.execute(
                     """INSERT INTO staff_task (staff_id, point_count, create_time) VALUES (%s, %s, %s)""" % (
                         staff.id, point_count, date_time_stamp))
@@ -283,7 +269,7 @@ class SystemUser(models.Model):
         for attendance_time in attendance_times:
             start_time_stamp = self._time_stamp(attendance_time.start_time)
             end_time_stamp = self._time_stamp(attendance_time.end_time)
-            print start_time_stamp, end_time_stamp
+
             self._cr.execute("""SELECT id, staff_id FROM staff_task WHERE create_time=%s""" % start_time_stamp)
             for row in self._cr.fetchall():
                 staff_points = self.env["inspection.staff_point"].search([("belong_staff.id", "=", row[1])])
@@ -321,19 +307,15 @@ class SystemUser(models.Model):
                             two_hundred_range_flag = True
                             five_hundred_range_flag = True
                             thousand_range_flag = True
-                            break
                         elif float(200) >= distance > float(100):
                             two_hundred_range_flag = True
                             five_hundred_range_flag = True
                             thousand_range_flag = True
-                            break
                         elif float(500) >= distance > float(200):
                             five_hundred_range_flag = True
                             thousand_range_flag = True
-                            break
                         elif float(1000) >= thousand_range_flag > 500:
                             thousand_range_flag = True
-                            break
                     self._cr.execute(
                         """INSERT INTO staff_task_detail (task_id, staff_id, default_range, one_hundred_range, two_hundred_range, five_hundred_range, thousand_range, point_id, create_time) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s)""",
                         (row[0], staff_point.belong_staff.id, default_range_flag, one_hundred_range_flag,
@@ -354,7 +336,7 @@ class SystemUser(models.Model):
             minutes = str(int(float(minutes) * 3 / 5))
         date = time.strftime("%Y-%m-%d", time.localtime(time.time())) + " " + time_list[0] + ":" + minutes + ":00"
         time_array = time.strptime(date, "%Y-%m-%d %H:%M:%S")
-        time_stamp = int(time.mktime(time_array)) - 32 * 60 * 60
+        time_stamp = int(time.mktime(time_array)) - 32 * 60 * 60  # 快了 8 小时
         return time_stamp
 
     def _haversine(self, longitude1, latitude1, longitude2, latitude2):
@@ -382,7 +364,6 @@ class SystemUser(models.Model):
         date = time.strftime("%Y-%m-%d", time.localtime(time.time())) + " 00:00:00"
         time_array = time.strptime(date, "%Y-%m-%d %H:%M:%S")
         time_stamp = int(time.mktime(time_array)) - 10 * 24 * 60 * 60
-        print time_stamp
 
         delete = """DELETE FROM DOTOP_STAFF_POSITION WHERE gps_time<=%s""" % time_stamp
         self._cr.execute(delete)

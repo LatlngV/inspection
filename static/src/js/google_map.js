@@ -122,6 +122,7 @@ function showStaffPosition(flag) {
                         position: new google.maps.LatLng(latitude, longitude),
                         map: map,
                         title: staff_name,
+                        draggable: true,
                         icon: icon
                     });
                     marker_list.push(staff_marker);

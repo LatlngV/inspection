@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<templates xml:space="preserve">
+
+    <t t-name="AttendanceTime">
+        <div>
+
+        </div>
+        <div>
+            <table>
+                <thead>
+                    <tr>
+                        <th>的范德萨</th>
+                        <th>的范德萨</th>
+                        <th>的范德萨</th>
+                        <th>的范德萨</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <t t-foreach="datas" t-as="data">
+                        <tr>
+                            <th>
+                                <t t-esc="data.name"/>
+                            </th>
+                            <th>
+                                <t t-esc="data.age"/>
+                            </th>
+                            <th>
+                                <t t-esc="data.sex"/>
+                            </th>
+                            <th>
+                                <t t-esc="data.phone"/>
+                            </th>
+                        </tr>
+                    </t>
+                </tbody>
+            </table>
+        </div>
+    </t>
+
+</templates>

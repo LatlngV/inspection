@@ -18,6 +18,10 @@
             <field name="name">巡检报表</field>
             <field name="tag">staff_report</field>
         </record>
+        <record id="inspection.attendance_action" model="ir.actions.client">
+            <field name="name">考勤规则</field>
+            <field name="tag">attendance_time</field>
+        </record>
 
         <menuitem
                 id="menu_root"
@@ -27,6 +31,12 @@
                 sequence="0"/>
 
 
+        <menuitem
+                id="item_attendance"
+                name="考勤规则"
+                parent="menu_root"
+                action="inspection.attendance_action"
+                groups="group_inspection_manager"/>
         <menuitem
                 id="menu_google_map"
                 name="实时监控"
@@ -40,6 +50,7 @@
                 name="巡检任务"
                 parent="menu_root"
                 action="inspection.staff_task_detail"
+                groups="group_staff_user"
                 sequence="1"/>
 
 

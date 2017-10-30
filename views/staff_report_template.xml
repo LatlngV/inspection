@@ -10,7 +10,6 @@
                 <title>报表</title>
 
                 <link rel="stylesheet" type="text/css" href="/inspection/static/src/css/bootstrap.min.css"/>
-                <link rel="stylesheet" type="text/css" href="/inspection/static/src/css/staff_report.css"/>
                 <script type="text/javascript" src="/inspection/static/src/js/jquery-1.7.2.min.js"></script>
                 <script type="text/javascript" src="/inspection/static/src/js/bootstrap.js"></script>
                 <script type="text/javascript" src="/inspection/static/src/js/echarts.min.js"></script>

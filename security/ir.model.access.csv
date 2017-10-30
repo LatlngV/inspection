@@ -34,5 +34,6 @@ access_patrol_point_sudo,patrol_point.sudo,model_inspection_patrol_point,inspect
 access_staff_point_kml_manager,staff_point_kml.manager,model_inspection_staff_point_kml,inspection.group_inspection_manager,1,0,0,0
 access_staff_point_kml_sudo,staff_point_kml.sudo,model_inspection_staff_point_kml,inspection.group_inspection_sudo,1,1,1,1
 
-access_staff_point_manager,staff_point.manager,model_inspection_staff_point,inspection.group_inspection_manager,1,0,0,0
+access_staff_point_user,staff_point.user,model_inspection_staff_point,inspection.group_inspection_user,0,1,0,0
+access_staff_point_manager,staff_point.manager,model_inspection_staff_point,inspection.group_inspection_manager,1,1,0,0
 access_staff_point_sudo,staff_point.sudo,model_inspection_staff_point,inspection.group_inspection_sudo,1,1,1,1

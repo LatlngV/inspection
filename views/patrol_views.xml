@@ -101,6 +101,7 @@
                     <field name="latitude"/>
                     <field name="longitude"/>
                     <field name="create_date"/>
+                    <field name="complete" invisible="1"/>
                 </tree>
             </field>
         </record>
@@ -120,6 +121,7 @@
                             <field name="longitude"/>
                             <field name="attendance_range"/>
                             <field name="create_date"/>
+                            <field name="complete"/>
                         </group>
                     </sheet>
                 </form>

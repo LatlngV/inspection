@@ -266,6 +266,7 @@ class PatrolStaffPoint(models.Model):
     longitude = fields.Float(string=u"经度坐标", digits=(16, 13), required=True)
     create_date = fields.Datetime(string=u"创建时间", default=fields.Datetime.now(), readonly=True)
     attendance_range = fields.Integer(string=u"考勤范围(米)", default=50, required=True)
+    complete = fields.Boolean(string=u"必经点完成情况", default=False)
 
     _sql_constraints = [
         (u"有效的考勤范围",

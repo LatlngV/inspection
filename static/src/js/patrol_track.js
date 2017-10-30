@@ -28,6 +28,14 @@ var mLongitude = 0;
 var mLatitude = 0;
 /* 巡线员名字 */
 var mStaffName = null;
+/* 最后一次的 GPS 时间 */
+var mGpsTime = 0;
+/* 更新巡线员巡线轨迹的 Marker 数组 */
+var updateHistoryMarker = [];
+/* 更新巡线员巡线轨迹的点 */
+var updateHistoryPoint = [];
+/* 更新巡线员巡线轨迹的线 */
+var updateHistoryPolyline = null;
 
 /**
  * 初始化谷歌地图
@@ -242,11 +250,13 @@ function showRightDrawerData() {
                 onNodeSelected: function (event, node) {
                     staffId = node.staff_id;
                     index = 0;
+                    mGpsTime = 0;
                     /* 根据巡线员 id 显示其对应的管道数据 */
                     selectRoute();
                 },
                 onNodeUnselected: function () {
                     staffId = 0;
+                    mGpsTime = 0;
                 }
             });
         }
@@ -361,6 +371,7 @@ function showRoute() {
                     } else {
                         icon = "/inspection/static/src/img/route_green.png";
                     }
+
                     var historyPointMarker = new google.maps.Marker({
                         position: new google.maps.LatLng(latitude, longitude),
                         map: map,
@@ -368,12 +379,16 @@ function showRoute() {
                     });
                     // 文本内容
                     var gpsTime = data.gps_time;
-                    var date = new Date(parseInt(gpsTime) * 1000).toLocaleString().replace(/:\d{1,2}$/, ' ');
+                    if (i === jsonLength - 1) {
+                        mGpsTime = gpsTime;
+                    }
+
+                    var dateTime = timeStamp2dateTime(gpsTime);
                     var content = "<div><span style='font-weight: bold;'>巡线人员: </span>" + data.staff + "</div>";
                     content += "<div><span style='font-weight: bold;'>纬度坐标: </span>" + latitude + "</div>";
                     content += "<div><span style='font-weight: bold;'>经度坐标: </span>" + longitude + "</div>";
                     content += "<div><span style='font-weight: bold;'>速度: </span>" + speed + " km/h</div>";
-                    content += "<div><span style='font-weight: bold;'>时间: </span>" + date + "</div>";
+                    content += "<div><span style='font-weight: bold;'>时间: </span>" + dateTime + "</div>";
                     content += "<div style='margin-top: 3px;'><span><a href='#' onclick='setStaffPoint()'>设为必经点</a></span></div>";
                     markerContent.push(content);
 
@@ -392,11 +407,38 @@ function showRoute() {
                 historyPolyline.setMap(map);
                 map.setCenter(historyPoint[index]);
                 map.setZoom(18);
+
+                /* 更新巡线员巡线轨迹 */
+                updateHistory();
             } else {
                 alert("此时间段暂无管道数据!");
             }
         }
     });
+}
+
+/**
+ * 将时间戳转换为日期
+ *
+ * @param timeStamp 时间戳
+ * @returns {string} 时间日期字符串
+ */
+function timeStamp2dateTime(timeStamp) {
+    var date = new Date(parseInt(timeStamp) * 1000);
+    var year = date.getFullYear();
+    var month = date.getMonth() + 1;
+    var day = date.getDate();
+    var hour = date.getHours();
+    var minute = date.getMinutes();
+    var second = date.getSeconds();
+    return year + "-" + month + "-" + day + " " + add(hour) + ":" + add(minute) + ":" + add(second);
+}
+
+function add(time) {
+    if (time < 10) {
+        return "0" + time;
+    }
+    return time
 }
 
 /**
@@ -410,6 +452,9 @@ function setStaffPoint() {
     $("#staffPointlModal").modal();
 }
 
+/**
+ * 保存必经点
+ */
 function saveStaffPoint() {
     // 获取相应必经点的数据
     $.ajax({
@@ -439,15 +484,18 @@ function saveStaffPoint() {
  *
  * @param marker 覆盖物
  * @param content 显示的文本内容
+ * @param latitude 纬度坐标
+ * @param longitude 经度坐标
+ * @param staffName 巡线员名字
  */
 function showInfoWindow(marker, content, latitude, longitude, staffName) {
     google.maps.event.addListener(marker, "click", function () {
         map.setCenter(marker.getPosition());
         infoWindow.setContent(content);
-        infoWindow.open(map, marker);
         mLatitude = latitude;
         mLongitude = longitude;
         mStaffName = staffName;
+        infoWindow.open(map, marker);
     });
 }
 
@@ -484,6 +532,58 @@ function play() {
         }, 1000);
         index = 0;
     }
+}
+
+/**
+ * 更新巡线轨迹
+ */
+function updateHistory() {
+    $.ajax({
+        url: "/update_staff_route",
+        data: {staffId: staffId, gpsTime: mGpsTime, endTime: Date.parse($("#date_end").val()) / 1000},
+        type: "post",
+        dataType: "json",
+
+        success: function (json) {
+            if (json !== null && json.length > 0) {
+                if (updateHistoryMarker.length > 0) {
+                    for (var i = 0; i < updateHistoryMarker.length; i++) {
+                        updateHistoryMarker[i].setMap(null);
+                    }
+                    updateHistoryMarker.splice(0, updateHistoryMarker.length);
+                }
+
+                if (updateHistoryPolyline !== null) {
+                    updateHistoryPoint.splice(0, updateHistoryPoint.length);
+                    updateHistoryPolyline.setMap(null);
+                }
+                for (i = 0; i < json.length; i++) {
+                    var data = json[i];
+                    var latitude = data.latitude;
+                    var longitude = data.longitude;
+                    var content = "<div><span style='font-weight: bold;'>纬度坐标: </span>" + latitude + "</div>";
+                    content += "<div><span style='font-weight: bold;'>经度坐标: </span>" + longitude + "</div>";
+                    var updatePointMarker = new google.maps.Marker({
+                        position: new google.maps.LatLng(latitude, longitude),
+                        map: map,
+                        icon: "/inspection/static/src/img/route_yellow.png"
+                    });
+                    updateHistoryMarker.push(updatePointMarker);
+                    updateHistoryPoint.push(new google.maps.LatLng(latitude, longitude));
+                    showInfoWindow(updatePointMarker, content);
+                }
+                // 画巡线轨迹
+                updateHistoryPolyline = new google.maps.Polyline({
+                    path: updateHistoryPoint,
+                    strokeColor: "#FFFF00",
+                    strokeWeight: 5,
+                    strokeOpacity: 1
+                });
+                updateHistoryPolyline.setMap(map);
+            }
+            window.setTimeout("updateHistory()", 20 * 1000);
+        }
+    });
 }
 
 /**
